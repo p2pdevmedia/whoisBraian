@@ -52,12 +52,22 @@ assert.match(
 );
 assert.match(
   html,
-  /function updateCircularOrder\(\)/,
-  "Expected slider to reorder slides circularly so both sides stay populated",
+  /function buildLoopSlides\(\)/,
+  "Expected slider to build cloned slide sets for a seamless loop",
 );
 assert.match(
   html,
-  /activeIndex = \(index \+ slides\.length\) % slides\.length/,
+  /clone\.dataset\.clone = "true"/,
+  "Expected cloned slides to be marked as loop clones",
+);
+assert.match(
+  html,
+  /function moveSlide\(direction\)/,
+  "Expected next and previous buttons to move physically by direction",
+);
+assert.match(
+  html,
+  /activeIndex = \(activeIndex \+ direction \+ slideCount\) % slideCount/,
   "Expected slider navigation to loop infinitely",
 );
 assert.match(
@@ -78,6 +88,11 @@ assert.match(
 assert.match(css, /\.video-slider/, "Expected CSS for the video slider");
 assert.match(css, /\.slider-viewport/, "Expected CSS for a horizontal slider viewport");
 assert.match(css, /\.video-track/, "Expected CSS for a horizontal video track");
+assert.match(
+  css,
+  /\.video-track \{[\s\S]*?gap: 0;/,
+  "Expected videos in the track to sit flush with no gap",
+);
 assert.match(css, /\.memento-book/, "Expected CSS for the MEMENTO book section");
 assert.match(css, /\.memento-landscape/, "Expected CSS for the MEMENTO landscape spread");
 

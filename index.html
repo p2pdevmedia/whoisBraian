@@ -255,13 +255,30 @@
     </main>
 
     <script>
-      const slides = Array.from(document.querySelectorAll(".video-slide"));
-      const projectTriggers = Array.from(document.querySelectorAll(".project-trigger"));
       const track = document.querySelector(".video-track");
+      const originalSlides = Array.from(document.querySelectorAll(".video-slide"));
+      const projectTriggers = Array.from(document.querySelectorAll(".project-trigger"));
       const previousButton = document.querySelector(".slider-prev");
       const nextButton = document.querySelector(".slider-next");
       const count = document.querySelector(".slider-count");
+      const slideCount = originalSlides.length;
+      let slides = [];
       let activeIndex = 0;
+      let activeTrackIndex = slideCount;
+
+      function createSlideClone(slide) {
+        const clone = slide.cloneNode(true);
+        clone.dataset.clone = "true";
+        clone.classList.remove("is-active", "is-playing");
+        clone.querySelector("iframe").src = "";
+        return clone;
+      }
+
+      function buildLoopSlides() {
+        track.prepend(...originalSlides.map(createSlideClone));
+        track.append(...originalSlides.map(createSlideClone));
+        slides = Array.from(track.querySelectorAll(".video-slide"));
+      }
 
       function stopSlide(slide) {
         const iframe = slide.querySelector("iframe");
@@ -270,42 +287,66 @@
       }
 
       function updateCount() {
-        count.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+        count.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(slideCount).padStart(2, "0")}`;
       }
 
-      function updateCircularOrder() {
+      function updateActiveClasses() {
         slides.forEach((slide, slideIndex) => {
-          const forwardDistance = (slideIndex - activeIndex + slides.length) % slides.length;
-          const circularOrder = forwardDistance > slides.length / 2
-            ? forwardDistance - slides.length
-            : forwardDistance;
-          slide.style.order = circularOrder;
+          slide.classList.toggle("is-active", slideIndex === activeTrackIndex);
         });
       }
 
-      function updateTrackPosition() {
-        updateCircularOrder();
-        const slide = slides[activeIndex];
+      function updateTrackPosition(animate = true) {
+        track.style.transition = animate ? "" : "none";
+        const slide = slides[activeTrackIndex];
         const slideWidth = slide.offsetWidth;
         const slideCenter = slide.offsetLeft + slideWidth / 2;
         const viewportCenter = window.innerWidth / 2;
         track.style.transform = `translateX(${viewportCenter - slideCenter}px)`;
+        if (!animate) {
+          window.requestAnimationFrame(() => {
+            track.style.transition = "";
+          });
+        }
       }
 
       function showSlide(index) {
-        stopSlide(slides[activeIndex]);
-        activeIndex = (index + slides.length) % slides.length;
-        slides.forEach((slide, slideIndex) => {
-          slide.classList.toggle("is-active", slideIndex === activeIndex);
-        });
+        stopSlide(slides[activeTrackIndex]);
+        activeIndex = (index + slideCount) % slideCount;
+        activeTrackIndex = activeIndex + slideCount;
+        updateActiveClasses();
         updateCount();
         updateTrackPosition();
+      }
+
+      function moveSlide(direction) {
+        stopSlide(slides[activeTrackIndex]);
+        activeTrackIndex += direction;
+        activeIndex = (activeIndex + direction + slideCount) % slideCount;
+        updateActiveClasses();
+        updateCount();
+        updateTrackPosition();
+      }
+
+      function resetLoopPosition() {
+        let resetIndex = activeTrackIndex;
+        if (activeTrackIndex < slideCount) {
+          resetIndex = activeTrackIndex + slideCount;
+        }
+        if (activeTrackIndex >= slideCount * 2) {
+          resetIndex = activeTrackIndex - slideCount;
+        }
+        if (resetIndex !== activeTrackIndex) {
+          activeTrackIndex = resetIndex;
+          updateActiveClasses();
+          updateTrackPosition(false);
+        }
       }
 
       function showAndPlaySlide(index) {
         showSlide(index);
         document.querySelector("#work").scrollIntoView({ behavior: "smooth", block: "start" });
-        window.setTimeout(() => playSlide(slides[activeIndex]), 320);
+        window.setTimeout(() => playSlide(slides[activeTrackIndex]), 320);
       }
 
       function playSlide(slide) {
@@ -316,14 +357,24 @@
         slide.classList.add("is-playing");
       }
 
-      previousButton.addEventListener("click", () => showSlide(activeIndex - 1));
-      nextButton.addEventListener("click", () => showSlide(activeIndex + 1));
+      buildLoopSlides();
+      updateActiveClasses();
+      updateCount();
+
+      previousButton.addEventListener("click", () => moveSlide(-1));
+      nextButton.addEventListener("click", () => moveSlide(1));
+      track.addEventListener("transitionend", resetLoopPosition);
 
       slides.forEach((slide) => {
         slide.querySelector(".play-toggle").addEventListener("click", () => playSlide(slide));
         slide.addEventListener("click", () => {
           if (!slide.classList.contains("is-active")) {
-            showSlide(slides.indexOf(slide));
+            stopSlide(slides[activeTrackIndex]);
+            activeTrackIndex = slides.indexOf(slide);
+            activeIndex = Number(slide.dataset.slide);
+            updateActiveClasses();
+            updateCount();
+            updateTrackPosition();
           }
         });
       });
@@ -333,8 +384,8 @@
       });
 
       document.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowLeft") showSlide(activeIndex - 1);
-        if (event.key === "ArrowRight") showSlide(activeIndex + 1);
+        if (event.key === "ArrowLeft") moveSlide(-1);
+        if (event.key === "ArrowRight") moveSlide(1);
       });
 
       window.addEventListener("resize", updateTrackPosition);

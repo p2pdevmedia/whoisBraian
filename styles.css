@@ -168,7 +168,7 @@ h1 {
 .video-track {
   display: flex;
   align-items: flex-start;
-  gap: clamp(18px, 2.6vw, 36px);
+  gap: 0;
   padding: 0 0 6px;
   transform: translateX(0);
   transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -182,21 +182,18 @@ h1 {
   align-content: start;
   gap: 18px;
   opacity: 0.38;
-  transform: scale(0.92);
-  transform-origin: center top;
-  transition: opacity 320ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 320ms ease;
 }
 
 .video-slide.is-active {
   opacity: 1;
-  transform: scale(1);
 }
 
 .video-slide:not(.is-active) .video-embed {
   cursor: pointer;
 }
 
-.video-slide:not(.is-active) .slide-caption p:last-child,
+.video-slide:not(.is-active) .slide-caption,
 .video-slide:not(.is-active) .play-toggle {
   opacity: 0;
 }
