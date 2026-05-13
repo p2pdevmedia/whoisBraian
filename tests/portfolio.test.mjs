@@ -6,6 +6,8 @@ const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
 
 const requiredHtml = [
   'class="video-slider"',
+  'class="slider-viewport"',
+  'class="video-track"',
   'data-slide="0"',
   'class="slider-prev"',
   'class="slider-next"',
@@ -35,6 +37,31 @@ assert.match(
 );
 assert.match(
   html,
+  /const track = document\.querySelector\("\.video-track"\)/,
+  "Expected slider script to move a horizontal video track",
+);
+assert.match(
+  html,
+  /track\.style\.transform = `translateX/,
+  "Expected slider script to center slides by translating the track",
+);
+assert.match(
+  html,
+  /const slideWidth = slide\.offsetWidth/,
+  "Expected slider centering to use layout width instead of transformed width",
+);
+assert.match(
+  html,
+  /function updateCircularOrder\(\)/,
+  "Expected slider to reorder slides circularly so both sides stay populated",
+);
+assert.match(
+  html,
+  /activeIndex = \(index \+ slides\.length\) % slides\.length/,
+  "Expected slider navigation to loop infinitely",
+);
+assert.match(
+  html,
   /iframe\.src = iframe\.dataset\.src/,
   "Expected slider script to lazy-load the active iframe",
 );
@@ -49,6 +76,8 @@ assert.match(
   "Expected the site background to move to an airy off-white palette",
 );
 assert.match(css, /\.video-slider/, "Expected CSS for the video slider");
+assert.match(css, /\.slider-viewport/, "Expected CSS for a horizontal slider viewport");
+assert.match(css, /\.video-track/, "Expected CSS for a horizontal video track");
 assert.match(css, /\.memento-book/, "Expected CSS for the MEMENTO book section");
 assert.match(css, /\.memento-landscape/, "Expected CSS for the MEMENTO landscape spread");
 

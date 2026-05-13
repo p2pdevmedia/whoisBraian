@@ -155,30 +155,50 @@ h1 {
 
 .video-slider {
   position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
 }
 
-.slider-stage {
+.slider-viewport {
   position: relative;
-  min-height: clamp(480px, 63vw, 740px);
+  overflow: hidden;
+  min-height: clamp(500px, 62vw, 780px);
+}
+
+.video-track {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(18px, 2.6vw, 36px);
+  padding: 0 0 6px;
+  transform: translateX(0);
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
 }
 
 .video-slide {
-  position: absolute;
-  inset: 0;
+  flex: 0 0 min(78vw, 1080px);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: 18px;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(16px);
-  transition: opacity 320ms ease, transform 320ms ease;
+  opacity: 0.38;
+  transform: scale(0.92);
+  transform-origin: center top;
+  transition: opacity 320ms ease, transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .video-slide.is-active {
   opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
+  transform: scale(1);
+}
+
+.video-slide:not(.is-active) .video-embed {
+  cursor: pointer;
+}
+
+.video-slide:not(.is-active) .slide-caption p:last-child,
+.video-slide:not(.is-active) .play-toggle {
+  opacity: 0;
 }
 
 .video-embed {
@@ -505,8 +525,12 @@ h1 {
     grid-column: auto;
   }
 
-  .slider-stage {
-    min-height: clamp(430px, 86vw, 640px);
+  .slider-viewport {
+    min-height: clamp(460px, 86vw, 660px);
+  }
+
+  .video-slide {
+    flex-basis: min(84vw, 760px);
   }
 
   .memento-book,
@@ -538,8 +562,12 @@ h1 {
     padding-top: 46px;
   }
 
-  .slider-stage {
-    min-height: 420px;
+  .slider-viewport {
+    min-height: 560px;
+  }
+
+  .video-slide {
+    flex-basis: 84vw;
   }
 
   .video-embed {
