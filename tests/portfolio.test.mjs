@@ -67,6 +67,26 @@ assert.match(
 );
 assert.match(
   html,
+  /let isAnimating = false/,
+  "Expected slider to guard against rapid clicks during transitions",
+);
+assert.match(
+  html,
+  /let pendingDirection = 0/,
+  "Expected slider to queue one adjacent move during rapid clicks",
+);
+assert.match(
+  html,
+  /function handleTrackTransitionEnd\(event\)/,
+  "Expected slider to reset loop state after the track transition ends",
+);
+assert.match(
+  html,
+  /if \(event\.target !== track\) return/,
+  "Expected slider to ignore transitionend events from child elements",
+);
+assert.match(
+  html,
   /const viewport = document\.querySelector\("\.slider-viewport"\)/,
   "Expected drag handling to attach to the slider viewport",
 );

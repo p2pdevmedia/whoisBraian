@@ -271,6 +271,8 @@
       let dragDeltaX = 0;
       let isDragging = false;
       let hasDragged = false;
+      let isAnimating = false;
+      let pendingDirection = 0;
 
       function createSlideClone(slide) {
         const clone = slide.cloneNode(true);
@@ -308,31 +310,40 @@
         const slideWidth = slide.offsetWidth;
         const slideCenter = slide.offsetLeft + slideWidth / 2;
         const viewportCenter = window.innerWidth / 2;
-        currentTranslate = viewportCenter - slideCenter;
+        const nextTranslate = viewportCenter - slideCenter;
+        const didMove = Math.abs(nextTranslate - currentTranslate) > 0.5;
+        currentTranslate = nextTranslate;
         track.style.transform = `translateX(${currentTranslate}px)`;
         if (!animate) {
           window.requestAnimationFrame(() => {
             track.style.transition = "";
           });
+          return false;
         }
+        return didMove;
       }
 
       function showSlide(index) {
+        pendingDirection = 0;
         stopSlide(slides[activeTrackIndex]);
         activeIndex = (index + slideCount) % slideCount;
         activeTrackIndex = activeIndex + slideCount;
         updateActiveClasses();
         updateCount();
-        updateTrackPosition();
+        isAnimating = updateTrackPosition();
       }
 
       function moveSlide(direction) {
+        if (isAnimating) {
+          pendingDirection = direction;
+          return;
+        }
         stopSlide(slides[activeTrackIndex]);
         activeTrackIndex += direction;
         activeIndex = (activeIndex + direction + slideCount) % slideCount;
         updateActiveClasses();
         updateCount();
-        updateTrackPosition();
+        isAnimating = updateTrackPosition();
       }
 
       function resetLoopPosition() {
@@ -347,6 +358,17 @@
           activeTrackIndex = resetIndex;
           updateActiveClasses();
           updateTrackPosition(false);
+        }
+      }
+
+      function handleTrackTransitionEnd(event) {
+        if (event.target !== track) return;
+        resetLoopPosition();
+        isAnimating = false;
+        if (pendingDirection !== 0) {
+          const queuedDirection = pendingDirection;
+          pendingDirection = 0;
+          window.requestAnimationFrame(() => moveSlide(queuedDirection));
         }
       }
 
@@ -370,19 +392,20 @@
 
       previousButton.addEventListener("click", () => moveSlide(-1));
       nextButton.addEventListener("click", () => moveSlide(1));
-      track.addEventListener("transitionend", resetLoopPosition);
+      track.addEventListener("transitionend", handleTrackTransitionEnd);
 
       slides.forEach((slide) => {
         slide.querySelector(".play-toggle").addEventListener("click", () => playSlide(slide));
         slide.addEventListener("click", () => {
           if (hasDragged) return;
+          if (isAnimating) return;
           if (!slide.classList.contains("is-active")) {
             stopSlide(slides[activeTrackIndex]);
             activeTrackIndex = slides.indexOf(slide);
             activeIndex = Number(slide.dataset.slide);
             updateActiveClasses();
             updateCount();
-            updateTrackPosition();
+            isAnimating = updateTrackPosition();
           }
         });
       });
@@ -392,7 +415,7 @@
       });
 
       function startDrag(event) {
-        if (event.target.closest("button")) return;
+        if (isAnimating || event.target.closest("button")) return;
         isDragging = true;
         hasDragged = false;
         dragStartX = event.clientX;
@@ -417,7 +440,7 @@
         if (Math.abs(dragDeltaX) > 90) {
           moveSlide(dragDeltaX < 0 ? 1 : -1);
         } else {
-          updateTrackPosition();
+          isAnimating = updateTrackPosition();
         }
         window.setTimeout(() => {
           hasDragged = false;
