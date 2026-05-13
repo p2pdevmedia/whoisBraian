@@ -1,0 +1,47 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+
+const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
+
+const requiredHtml = [
+  'class="video-slider"',
+  'data-slide="0"',
+  'class="slider-prev"',
+  'class="slider-next"',
+  "Director &amp; Photographer",
+  'href="#film35"',
+  'id="film35"',
+  'href="#shortfilms"',
+  'id="shortfilms"',
+  'href="#actor"',
+  'id="actor"',
+  "player.vimeo.com/video/1163724360",
+];
+
+for (const snippet of requiredHtml) {
+  assert.ok(html.includes(snippet), `Expected index.html to include ${snippet}`);
+}
+
+assert.match(
+  html,
+  /querySelectorAll\("\.video-slide"\)/,
+  "Expected slider script to manage video slides",
+);
+assert.match(
+  html,
+  /iframe\.src = iframe\.dataset\.src/,
+  "Expected slider script to lazy-load the active iframe",
+);
+assert.match(
+  html,
+  /iframe\.src = ""/,
+  "Expected slider script to stop videos when slides change",
+);
+assert.match(
+  css,
+  /--paper:\s*#f7f5ef/,
+  "Expected the site background to move to an airy off-white palette",
+);
+assert.match(css, /\.video-slider/, "Expected CSS for the video slider");
+assert.match(css, /\.film35-cover/, "Expected CSS for the 35mm cover section");

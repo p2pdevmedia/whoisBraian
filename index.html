@@ -5,250 +5,221 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Portfolio cinematografico de Brian Hansen: actor, modelo, director y camara con trabajos de video, fotografia y cine."
+      content="Portfolio de Brian Hansen: director y fotografo con trabajos en video, shortfilms y fotografia 35mm."
     />
-    <title>Brian Hansen | Film Portfolio</title>
+    <title>Brian Hansen | Director &amp; Photographer</title>
     <link rel="preconnect" href="https://player.vimeo.com" />
     <link rel="preconnect" href="https://i.vimeocdn.com" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="site-header" aria-label="Navegacion principal">
-      <a class="brand" href="#top" aria-label="Brian Hansen inicio">
-        <span>Brian</span>
-        <span>Hansen</span>
-      </a>
+      <a class="brand" href="#top" aria-label="Brian Hansen inicio">Brian Hansen</a>
       <nav class="nav-links" aria-label="Secciones">
-        <a href="#work">Videos</a>
-        <a href="#stills">Fotos</a>
-        <a href="#about">Perfil</a>
-        <a href="#contact">Contacto</a>
+        <a href="#work">Work</a>
+        <a href="#film35">35mm</a>
+        <a href="#shortfilms">Shortfilms</a>
+        <a href="#actor">Actor</a>
+        <a href="#contact">Contact</a>
       </nav>
     </header>
 
     <main id="top">
-      <section class="hero" aria-labelledby="hero-title">
-        <picture class="hero-media">
-          <img
-            src="https://i.vimeocdn.com/video/2120066366-47542d2ae4c9530324d11126ade38a6db3bd0c8433f5620259aca87ca85e91a3-d_960?region=us"
-            alt="Still de TULU por Brian Hansen"
-          />
-        </picture>
-        <div class="hero-shade"></div>
-        <div class="hero-content">
-          <p class="eyebrow">Actor / Modelo / Director / Segunda camara</p>
-          <h1 id="hero-title">Brian Hansen</h1>
-          <p class="hero-copy">
-            Imagen con pulso de cine: retratos, comerciales, videoclips y piezas con energia documental.
-            Desde Patagonia, basado en Ciudad de Mexico.
+      <section class="hero" id="work" aria-labelledby="hero-title">
+        <div class="hero-intro">
+          <p class="eyebrow">Brian Hansen</p>
+          <h1 id="hero-title">Director &amp; Photographer</h1>
+          <p>
+            Imagen luminosa, textura analogica y una mirada cercana al cine documental.
+            Trabajos de direccion, fotografia, video y piezas en 35mm.
           </p>
-          <div class="hero-actions">
-            <a
-              class="button primary"
-              href="https://vimeo.com/1163724360"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Ver reel
-            </a>
-            <a class="button secondary" href="mailto:filmbyhansen@gmail.com">Contratar</a>
+        </div>
+
+        <section class="video-slider" aria-label="Slider de videos destacados">
+          <div class="slider-stage">
+            <article class="video-slide is-active" data-slide="0">
+              <div class="video-embed">
+                <img
+                  src="https://i.vimeocdn.com/video/2120066366-47542d2ae4c9530324d11126ade38a6db3bd0c8433f5620259aca87ca85e91a3-d_1280?region=us"
+                  alt="Still de TULU"
+                />
+                <iframe
+                  title="TULU"
+                  data-src="https://player.vimeo.com/video/1163724360?autoplay=1&title=0&byline=0&portrait=0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+                <button class="play-toggle" type="button" aria-label="Reproducir TULU">Play</button>
+              </div>
+              <div class="slide-caption">
+                <p class="meta">Featured / 2024</p>
+                <h2>TULU</h2>
+                <p>A night out in Mexico City. Shot and edited by Brian Hansen.</p>
+              </div>
+            </article>
+
+            <article class="video-slide" data-slide="1">
+              <div class="video-embed">
+                <img
+                  src="https://i.vimeocdn.com/video/2115285097-c796450a4f90e58082576130c199a78e72ada7231e82ee15c2a05579bdffb4ff-d_1280?region=us"
+                  alt="Still de Bonita de Coco Rodriguez"
+                />
+                <iframe
+                  title="Bonita - Coco Rodriguez"
+                  data-src="https://player.vimeo.com/video/1160390224?autoplay=1&title=0&byline=0&portrait=0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+                <button class="play-toggle" type="button" aria-label="Reproducir Bonita">Play</button>
+              </div>
+              <div class="slide-caption">
+                <p class="meta">Music video / 2021</p>
+                <h2>Bonita</h2>
+                <p>Coco Rodriguez. Una pieza de color suave, movimiento y retrato musical.</p>
+              </div>
+            </article>
+
+            <article class="video-slide" data-slide="2">
+              <div class="video-embed">
+                <img
+                  src="https://i.vimeocdn.com/video/2115280532-c2b528289d52d48f1424326a07df5d8d3e3b87e5ed878d24eaed14f46be901dd-d_1280?region=us"
+                  alt="Still de Ludmila Di Pasquale"
+                />
+                <iframe
+                  title="Ludmila Di Pasquale"
+                  data-src="https://player.vimeo.com/video/1160387061?autoplay=1&title=0&byline=0&portrait=0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+                <button class="play-toggle" type="button" aria-label="Reproducir Ludmila Di Pasquale">Play</button>
+              </div>
+              <div class="slide-caption">
+                <p class="meta">VHS diaries / 2026</p>
+                <h2>Ludmila Di Pasquale</h2>
+                <p>Diario visual con pulso analogico, textura y un mood intimo.</p>
+              </div>
+            </article>
+
+            <article class="video-slide" data-slide="3">
+              <div class="video-embed">
+                <img
+                  src="https://i.vimeocdn.com/video/2115272348-2d9ceb173dfac9122493ea0d6aaea3e7dd2c75ab7226b50a33361fa3407226e4-d_1280?region=us"
+                  alt="Still de Nacozari Rifa"
+                />
+                <iframe
+                  title="NACOZARI RIFA!"
+                  data-src="https://player.vimeo.com/video/1160381965?autoplay=1&title=0&byline=0&portrait=0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+                <button class="play-toggle" type="button" aria-label="Reproducir Nacozari Rifa">Play</button>
+              </div>
+              <div class="slide-caption">
+                <p class="meta">Documentary portrait / 2023</p>
+                <h2>NACOZARI RIFA!</h2>
+                <p>Retrato comunitario con energia de calle y textura documental.</p>
+              </div>
+            </article>
+
+            <article class="video-slide" data-slide="4">
+              <div class="video-embed">
+                <img
+                  src="https://i.vimeocdn.com/video/2115269432-40ba383ea2861d95f8d03ea176ce89d746c56f8c83f5751fd62368b0796d7a76-d_1280?region=us"
+                  alt="Still de Chevrolet S10 Max"
+                />
+                <iframe
+                  title="Chevrolet S10 Max"
+                  data-src="https://player.vimeo.com/video/1160375315?autoplay=1&title=0&byline=0&portrait=0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+                <button class="play-toggle" type="button" aria-label="Reproducir Chevrolet S10 Max">Play</button>
+              </div>
+              <div class="slide-caption">
+                <p class="meta">Commercial / 2025</p>
+                <h2>Chevrolet S10 Max</h2>
+                <p>Trabajo comercial con escala, ritmo y direccion de imagen.</p>
+              </div>
+            </article>
           </div>
-        </div>
-        <aside class="hero-panel" aria-label="Resumen de experiencia">
-          <span>06 videos destacados</span>
-          <strong>Film / fashion / commercial</strong>
-        </aside>
-      </section>
 
-      <section class="section intro" aria-label="Resumen">
-        <p>
-          Portfolio curado para mostrar trabajos de actuacion, modelaje, direccion, camara y mirada visual.
-          La web queda preparada para sumar fotos editoriales, backstage, creditos y nuevos reels.
-        </p>
-      </section>
-
-      <section class="section work-section" id="work" aria-labelledby="work-title">
-        <div class="section-heading">
-          <p class="eyebrow">Selected motion</p>
-          <h2 id="work-title">Videos</h2>
-        </div>
-
-        <div class="video-feature">
-          <a class="video-frame feature-poster" href="https://vimeo.com/1163724360" target="_blank" rel="noreferrer">
-            <img
-              src="https://i.vimeocdn.com/video/2120066366-47542d2ae4c9530324d11126ade38a6db3bd0c8433f5620259aca87ca85e91a3-d_960?region=us"
-              alt="Still de TULU (2024)"
-            />
-            <span>Play reel</span>
-          </a>
-          <div class="feature-copy">
-            <span class="tag">Featured</span>
-            <h3>TULU (2024)</h3>
-            <p>A night out in Mexico City. Shot and edited by Brian Hansen.</p>
-            <a href="https://vimeo.com/1163724360" target="_blank" rel="noreferrer">Abrir en Vimeo</a>
+          <div class="slider-controls" aria-label="Controles del slider">
+            <button class="slider-prev" type="button">Prev</button>
+            <span class="slider-count" aria-live="polite">01 / 05</span>
+            <button class="slider-next" type="button">Next</button>
           </div>
-        </div>
-
-        <div class="video-grid" aria-label="Galeria de videos">
-          <article class="video-card">
-            <a
-              class="video-thumb"
-              href="https://vimeo.com/1160390224"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Ver Bonita de Coco Rodriguez en Vimeo"
-            >
-              <img
-                src="https://i.vimeocdn.com/video/2115285097-c796450a4f90e58082576130c199a78e72ada7231e82ee15c2a05579bdffb4ff-d_960?region=us"
-                alt="Still de Bonita de Coco Rodriguez"
-              />
-              <span>Play</span>
-            </a>
-            <div>
-              <p class="meta">Music video / 2021</p>
-              <h3>Bonita - Coco Rodriguez</h3>
-            </div>
-          </article>
-
-          <article class="video-card">
-            <a
-              class="video-thumb"
-              href="https://vimeo.com/1160387061"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Ver Ludmila Di Pasquale en Vimeo"
-            >
-              <img
-                src="https://i.vimeocdn.com/video/2115280532-c2b528289d52d48f1424326a07df5d8d3e3b87e5ed878d24eaed14f46be901dd-d_960?region=us"
-                alt="Still de Ludmila Di Pasquale"
-              />
-              <span>Play</span>
-            </a>
-            <div>
-              <p class="meta">VHS diaries / 2026</p>
-              <h3>Ludmila Di Pasquale</h3>
-            </div>
-          </article>
-
-          <article class="video-card">
-            <a
-              class="video-thumb"
-              href="https://vimeo.com/1160381965"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Ver Nacozari Rifa en Vimeo"
-            >
-              <img
-                src="https://i.vimeocdn.com/video/2115272348-2d9ceb173dfac9122493ea0d6aaea3e7dd2c75ab7226b50a33361fa3407226e4-d_960?region=us"
-                alt="Still de Nacozari Rifa"
-              />
-              <span>Play</span>
-            </a>
-            <div>
-              <p class="meta">Documentary portrait / 2023</p>
-              <h3>NACOZARI RIFA!</h3>
-            </div>
-          </article>
-
-          <article class="video-card">
-            <a
-              class="video-thumb"
-              href="https://vimeo.com/1160375315"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Ver Chevrolet S10 Max en Vimeo"
-            >
-              <img
-                src="https://i.vimeocdn.com/video/2115269432-40ba383ea2861d95f8d03ea176ce89d746c56f8c83f5751fd62368b0796d7a76-d_960?region=us"
-                alt="Still de Chevrolet S10 Max"
-              />
-              <span>Play</span>
-            </a>
-            <div>
-              <p class="meta">Commercial / 2025</p>
-              <h3>Chevrolet S10 Max</h3>
-            </div>
-          </article>
-
-          <article class="video-card">
-            <a
-              class="video-thumb"
-              href="https://vimeo.com/1038807040"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Ver No More Movies en Vimeo"
-            >
-              <img
-                src="https://i.vimeocdn.com/video/2071306256-d37beba1914ae147e707527c3e86667fc1a6af97c6951a404f28686cd6ac36c1-d_960?region=us"
-                alt="Still de No More Movies"
-              />
-              <span>Play</span>
-            </a>
-            <div>
-              <p class="meta">Short film / 2025</p>
-              <h3>No More Movies</h3>
-            </div>
-          </article>
-        </div>
+        </section>
       </section>
 
-      <section class="section stills-section" id="stills" aria-labelledby="stills-title">
+      <section class="section film35-section" id="film35" aria-labelledby="film35-title">
         <div class="section-heading">
-          <p class="eyebrow">Frames and mood</p>
-          <h2 id="stills-title">Fotos</h2>
+          <p class="eyebrow">35mm</p>
+          <h2 id="film35-title">Air, grain, memory.</h2>
         </div>
-        <div class="stills-grid">
-          <figure class="still tall">
+        <div class="film35-cover">
+          <figure class="film-frame frame-large">
             <img
               src="https://i.vimeocdn.com/portrait/120603790_640x640?subrect=528%2C0%2C1331%2C803&r=cover&sig=27c504935b9f14bc76e502976023689a67c7324e587cc934937702fbbf3e60ed&v=1&region=us"
               alt="Retrato de Brian Hansen"
             />
-            <figcaption>Portrait</figcaption>
           </figure>
-          <figure class="still">
+          <figure class="film-frame frame-small top">
             <img
               src="https://i.vimeocdn.com/video/2115280532-c2b528289d52d48f1424326a07df5d8d3e3b87e5ed878d24eaed14f46be901dd-d_960?region=us"
-              alt="Frame nocturno de trabajo audiovisual"
+              alt="Frame analogico nocturno"
             />
-            <figcaption>Patagonia / VHS</figcaption>
           </figure>
-          <figure class="still">
+          <figure class="film-frame frame-small bottom">
             <img
               src="https://i.vimeocdn.com/video/2115272348-2d9ceb173dfac9122493ea0d6aaea3e7dd2c75ab7226b50a33361fa3407226e4-d_960?region=us"
-              alt="Frame documental de comunidad"
+              alt="Frame documental"
             />
-            <figcaption>Documentary</figcaption>
           </figure>
+          <p>
+            La seccion queda preparada para reemplazar estas imagenes por las fotos 35mm de Brian:
+            blancos amplios, sombras suaves y fotos flotando sobre la caratula.
+          </p>
         </div>
       </section>
 
-      <section class="section about-section" id="about" aria-labelledby="about-title">
+      <section class="section shortfilms-section" id="shortfilms" aria-labelledby="shortfilms-title">
         <div class="section-heading">
-          <p class="eyebrow">Profile</p>
-          <h2 id="about-title">Mirada y experiencia</h2>
+          <p class="eyebrow">Shortfilms</p>
+          <h2 id="shortfilms-title">Narrative pieces</h2>
         </div>
-        <div class="about-layout">
+        <div class="project-list">
+          <a href="https://vimeo.com/1038807040" target="_blank" rel="noreferrer">
+            <span>No More Movies</span>
+            <small>Short film / 2025</small>
+          </a>
+          <a href="https://vimeo.com/1163724360" target="_blank" rel="noreferrer">
+            <span>TULU</span>
+            <small>Mexico City / 2024</small>
+          </a>
+          <a href="https://vimeo.com/1160381965" target="_blank" rel="noreferrer">
+            <span>NACOZARI RIFA!</span>
+            <small>Documentary portrait / 2023</small>
+          </a>
+        </div>
+      </section>
+
+      <section class="section actor-section" id="actor" aria-labelledby="actor-title">
+        <div class="section-heading">
+          <p class="eyebrow">Actor</p>
+          <h2 id="actor-title">Selected acting work</h2>
+        </div>
+        <div class="actor-copy">
           <p>
-            Brian Hansen trabaja entre cine, direccion, fotografia y piezas de imagen con una sensibilidad
-            cercana al documental, la moda y el retrato. Su perfil publico lo presenta como director de
-            Patagonia, basado en Ciudad de Mexico.
+            Trabajos como actor en una pestaña aparte, separados del portfolio principal de
+            direccion y fotografia para que cada faceta respire con su propio contexto.
           </p>
-          <div class="credits">
-            <span>Actor</span>
-            <span>Modelo</span>
-            <span>Director</span>
-            <span>Segunda camara</span>
-            <span>Video editing</span>
-            <span>Commercial work</span>
-          </div>
+          <a class="text-link" href="mailto:filmbyhansen@gmail.com">Solicitar material actoral</a>
         </div>
       </section>
 
       <section class="contact-section" id="contact" aria-labelledby="contact-title">
-        <div>
-          <p class="eyebrow">Bookings and reels</p>
-          <h2 id="contact-title">Hablemos de la proxima filmacion.</h2>
-        </div>
+        <p class="eyebrow">Bookings and reels</p>
+        <h2 id="contact-title">Hablemos de la proxima filmacion.</h2>
         <div class="contact-actions">
           <a class="button primary" href="mailto:filmbyhansen@gmail.com">filmbyhansen@gmail.com</a>
           <a class="button secondary" href="https://www.instagram.com/whoisbrianhansen/" target="_blank" rel="noreferrer">
@@ -260,5 +231,52 @@
         </div>
       </section>
     </main>
+
+    <script>
+      const slides = Array.from(document.querySelectorAll(".video-slide"));
+      const previousButton = document.querySelector(".slider-prev");
+      const nextButton = document.querySelector(".slider-next");
+      const count = document.querySelector(".slider-count");
+      let activeIndex = 0;
+
+      function stopSlide(slide) {
+        const iframe = slide.querySelector("iframe");
+        iframe.src = "";
+        slide.classList.remove("is-playing");
+      }
+
+      function updateCount() {
+        count.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
+      }
+
+      function showSlide(index) {
+        stopSlide(slides[activeIndex]);
+        activeIndex = (index + slides.length) % slides.length;
+        slides.forEach((slide, slideIndex) => {
+          slide.classList.toggle("is-active", slideIndex === activeIndex);
+        });
+        updateCount();
+      }
+
+      function playSlide(slide) {
+        const iframe = slide.querySelector("iframe");
+        if (!iframe.src) {
+          iframe.src = iframe.dataset.src;
+        }
+        slide.classList.add("is-playing");
+      }
+
+      previousButton.addEventListener("click", () => showSlide(activeIndex - 1));
+      nextButton.addEventListener("click", () => showSlide(activeIndex + 1));
+
+      slides.forEach((slide) => {
+        slide.querySelector(".play-toggle").addEventListener("click", () => playSlide(slide));
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") showSlide(activeIndex - 1);
+        if (event.key === "ArrowRight") showSlide(activeIndex + 1);
+      });
+    </script>
   </body>
 </html>
