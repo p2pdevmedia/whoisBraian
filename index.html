@@ -141,11 +141,32 @@
                 <p>Trabajo comercial con escala, ritmo y direccion de imagen.</p>
               </div>
             </article>
+
+            <article class="video-slide" data-slide="5">
+              <div class="video-embed">
+                <img
+                  src="https://i.vimeocdn.com/video/2071306256-d37beba1914ae147e707527c3e86667fc1a6af97c6951a404f28686cd6ac36c1-d_1280?region=us"
+                  alt="Still de No More Movies"
+                />
+                <iframe
+                  title="No More Movies"
+                  data-src="https://player.vimeo.com/video/1038807040?autoplay=1&title=0&byline=0&portrait=0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+                <button class="play-toggle" type="button" aria-label="Reproducir No More Movies">Play</button>
+              </div>
+              <div class="slide-caption">
+                <p class="meta">Short film / 2025</p>
+                <h2>No More Movies</h2>
+                <p>Pieza narrativa breve, integrada al slider para reproducirse dentro de la web.</p>
+              </div>
+            </article>
           </div>
 
           <div class="slider-controls" aria-label="Controles del slider">
             <button class="slider-prev" type="button">Prev</button>
-            <span class="slider-count" aria-live="polite">01 / 05</span>
+            <span class="slider-count" aria-live="polite">01 / 06</span>
             <button class="slider-next" type="button">Next</button>
           </div>
         </section>
@@ -153,31 +174,30 @@
 
       <section class="section film35-section" id="film35" aria-labelledby="film35-title">
         <div class="section-heading">
-          <p class="eyebrow">35mm</p>
-          <h2 id="film35-title">Air, grain, memory.</h2>
+          <p class="eyebrow">35mm book</p>
+          <h2 id="film35-title">MEMENTO 35mm</h2>
         </div>
-        <div class="film35-cover">
-          <figure class="film-frame frame-large">
-            <img
-              src="https://i.vimeocdn.com/portrait/120603790_640x640?subrect=528%2C0%2C1331%2C803&r=cover&sig=27c504935b9f14bc76e502976023689a67c7324e587cc934937702fbbf3e60ed&v=1&region=us"
-              alt="Retrato de Brian Hansen"
-            />
+        <div class="memento-book">
+          <div class="memento-copy">
+            <p class="book-title">MEMENTO</p>
+            <p class="book-subtitle">Una serie 35mm por Brian Hansen</p>
+            <p>
+              Fragmento visual del libro: una pagina abierta, silenciosa, con fondo hueso,
+              fotografia analogica y texto reducido al minimo.
+            </p>
+          </div>
+          <figure class="memento-cover">
+            <img src="assets/memento-cover.jpg" alt="Portada del libro MEMENTO 35mm" />
           </figure>
-          <figure class="film-frame frame-small top">
-            <img
-              src="https://i.vimeocdn.com/video/2115280532-c2b528289d52d48f1424326a07df5d8d3e3b87e5ed878d24eaed14f46be901dd-d_960?region=us"
-              alt="Frame analogico nocturno"
-            />
-          </figure>
-          <figure class="film-frame frame-small bottom">
-            <img
-              src="https://i.vimeocdn.com/video/2115272348-2d9ceb173dfac9122493ea0d6aaea3e7dd2c75ab7226b50a33361fa3407226e4-d_960?region=us"
-              alt="Frame documental"
-            />
-          </figure>
+        </div>
+        <figure class="memento-landscape">
+          <img src="assets/memento-landscape.jpg" alt="Doble pagina fotografica del libro MEMENTO 35mm" />
+          <figcaption>MEMENTO</figcaption>
+        </figure>
+        <div class="memento-note">
           <p>
-            La seccion queda preparada para reemplazar estas imagenes por las fotos 35mm de Brian:
-            blancos amplios, sombras suaves y fotos flotando sobre la caratula.
+            El resto de la web toma este ritmo: margenes amplios, piezas aisladas,
+            grano visible y una lectura pausada entre cine, foto fija y memoria.
           </p>
         </div>
       </section>
@@ -188,18 +208,18 @@
           <h2 id="shortfilms-title">Narrative pieces</h2>
         </div>
         <div class="project-list">
-          <a href="https://vimeo.com/1038807040" target="_blank" rel="noreferrer">
+          <button class="project-trigger" type="button" data-target-slide="5">
             <span>No More Movies</span>
             <small>Short film / 2025</small>
-          </a>
-          <a href="https://vimeo.com/1163724360" target="_blank" rel="noreferrer">
+          </button>
+          <button class="project-trigger" type="button" data-target-slide="0">
             <span>TULU</span>
             <small>Mexico City / 2024</small>
-          </a>
-          <a href="https://vimeo.com/1160381965" target="_blank" rel="noreferrer">
+          </button>
+          <button class="project-trigger" type="button" data-target-slide="3">
             <span>NACOZARI RIFA!</span>
             <small>Documentary portrait / 2023</small>
-          </a>
+          </button>
         </div>
       </section>
 
@@ -234,6 +254,7 @@
 
     <script>
       const slides = Array.from(document.querySelectorAll(".video-slide"));
+      const projectTriggers = Array.from(document.querySelectorAll(".project-trigger"));
       const previousButton = document.querySelector(".slider-prev");
       const nextButton = document.querySelector(".slider-next");
       const count = document.querySelector(".slider-count");
@@ -258,6 +279,12 @@
         updateCount();
       }
 
+      function showAndPlaySlide(index) {
+        showSlide(index);
+        document.querySelector("#work").scrollIntoView({ behavior: "smooth", block: "start" });
+        window.setTimeout(() => playSlide(slides[activeIndex]), 320);
+      }
+
       function playSlide(slide) {
         const iframe = slide.querySelector("iframe");
         if (!iframe.src) {
@@ -271,6 +298,10 @@
 
       slides.forEach((slide) => {
         slide.querySelector(".play-toggle").addEventListener("click", () => playSlide(slide));
+      });
+
+      projectTriggers.forEach((trigger) => {
+        trigger.addEventListener("click", () => showAndPlaySlide(Number(trigger.dataset.targetSlide)));
       });
 
       document.addEventListener("keydown", (event) => {

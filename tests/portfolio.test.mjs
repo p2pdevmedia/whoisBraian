@@ -12,11 +12,16 @@ const requiredHtml = [
   "Director &amp; Photographer",
   'href="#film35"',
   'id="film35"',
+  "MEMENTO 35mm",
+  "assets/memento-cover.jpg",
+  "assets/memento-landscape.jpg",
   'href="#shortfilms"',
   'id="shortfilms"',
   'href="#actor"',
   'id="actor"',
   "player.vimeo.com/video/1163724360",
+  "player.vimeo.com/video/1038807040",
+  'data-target-slide="5"',
 ];
 
 for (const snippet of requiredHtml) {
@@ -44,4 +49,17 @@ assert.match(
   "Expected the site background to move to an airy off-white palette",
 );
 assert.match(css, /\.video-slider/, "Expected CSS for the video slider");
-assert.match(css, /\.film35-cover/, "Expected CSS for the 35mm cover section");
+assert.match(css, /\.memento-book/, "Expected CSS for the MEMENTO book section");
+assert.match(css, /\.memento-landscape/, "Expected CSS for the MEMENTO landscape spread");
+
+const projectListHtml = html.match(/<div class="project-list">[\s\S]*?<\/div>/)?.[0] ?? "";
+assert.ok(projectListHtml, "Expected a project list for shortfilms");
+assert.ok(
+  !projectListHtml.includes('href="https://vimeo.com/'),
+  "Expected shortfilm projects to trigger in-page playback instead of opening Vimeo",
+);
+assert.match(
+  html,
+  /document\.querySelectorAll\("\.project-trigger"\)/,
+  "Expected project triggers to connect shortfilm items to the in-page slider",
+);
