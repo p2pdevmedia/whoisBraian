@@ -255,6 +255,7 @@
     </main>
 
     <script>
+      const viewport = document.querySelector(".slider-viewport");
       const track = document.querySelector(".video-track");
       const originalSlides = Array.from(document.querySelectorAll(".video-slide"));
       const projectTriggers = Array.from(document.querySelectorAll(".project-trigger"));
@@ -265,6 +266,11 @@
       let slides = [];
       let activeIndex = 0;
       let activeTrackIndex = slideCount;
+      let currentTranslate = 0;
+      let dragStartX = 0;
+      let dragDeltaX = 0;
+      let isDragging = false;
+      let hasDragged = false;
 
       function createSlideClone(slide) {
         const clone = slide.cloneNode(true);
@@ -302,7 +308,8 @@
         const slideWidth = slide.offsetWidth;
         const slideCenter = slide.offsetLeft + slideWidth / 2;
         const viewportCenter = window.innerWidth / 2;
-        track.style.transform = `translateX(${viewportCenter - slideCenter}px)`;
+        currentTranslate = viewportCenter - slideCenter;
+        track.style.transform = `translateX(${currentTranslate}px)`;
         if (!animate) {
           window.requestAnimationFrame(() => {
             track.style.transition = "";
@@ -368,6 +375,7 @@
       slides.forEach((slide) => {
         slide.querySelector(".play-toggle").addEventListener("click", () => playSlide(slide));
         slide.addEventListener("click", () => {
+          if (hasDragged) return;
           if (!slide.classList.contains("is-active")) {
             stopSlide(slides[activeTrackIndex]);
             activeTrackIndex = slides.indexOf(slide);
@@ -382,6 +390,44 @@
       projectTriggers.forEach((trigger) => {
         trigger.addEventListener("click", () => showAndPlaySlide(Number(trigger.dataset.targetSlide)));
       });
+
+      function startDrag(event) {
+        if (event.target.closest("button")) return;
+        isDragging = true;
+        hasDragged = false;
+        dragStartX = event.clientX;
+        dragDeltaX = 0;
+        track.style.transition = "none";
+        viewport.classList.add("is-dragging");
+        viewport.setPointerCapture(event.pointerId);
+      }
+
+      function dragSlider(event) {
+        if (!isDragging) return;
+        dragDeltaX = event.clientX - dragStartX;
+        if (Math.abs(dragDeltaX) > 6) hasDragged = true;
+        track.style.transform = `translateX(${currentTranslate + dragDeltaX}px)`;
+      }
+
+      function finishDrag() {
+        if (!isDragging) return;
+        isDragging = false;
+        viewport.classList.remove("is-dragging");
+        track.style.transition = "";
+        if (Math.abs(dragDeltaX) > 90) {
+          moveSlide(dragDeltaX < 0 ? 1 : -1);
+        } else {
+          updateTrackPosition();
+        }
+        window.setTimeout(() => {
+          hasDragged = false;
+        }, 0);
+      }
+
+      viewport.addEventListener("pointerdown", startDrag);
+      viewport.addEventListener("pointermove", dragSlider);
+      viewport.addEventListener("pointerup", finishDrag);
+      viewport.addEventListener("pointercancel", finishDrag);
 
       document.addEventListener("keydown", (event) => {
         if (event.key === "ArrowLeft") moveSlide(-1);

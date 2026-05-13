@@ -67,6 +67,21 @@ assert.match(
 );
 assert.match(
   html,
+  /const viewport = document\.querySelector\("\.slider-viewport"\)/,
+  "Expected drag handling to attach to the slider viewport",
+);
+assert.match(
+  html,
+  /viewport\.addEventListener\("pointerdown"/,
+  "Expected pointer drag to start horizontal slider movement",
+);
+assert.match(
+  html,
+  /function finishDrag\(\)/,
+  "Expected drag handling to decide whether to move to an adjacent video",
+);
+assert.match(
+  html,
   /activeIndex = \(activeIndex \+ direction \+ slideCount\) % slideCount/,
   "Expected slider navigation to loop infinitely",
 );
@@ -88,6 +103,11 @@ assert.match(
 assert.match(css, /\.video-slider/, "Expected CSS for the video slider");
 assert.match(css, /\.slider-viewport/, "Expected CSS for a horizontal slider viewport");
 assert.match(css, /\.video-track/, "Expected CSS for a horizontal video track");
+assert.match(
+  css,
+  /\.slider-controls \{[\s\S]*?position: absolute;/,
+  "Expected slider controls to overlay adjacent videos instead of sitting below",
+);
 assert.match(
   css,
   /\.video-track \{[\s\S]*?gap: 0;/,
