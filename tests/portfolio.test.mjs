@@ -3,6 +3,9 @@ import { readFileSync } from "node:fs";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const css = readFileSync(new URL("../styles.css", import.meta.url), "utf8");
+const manifest = JSON.parse(
+  readFileSync(new URL("../assets/memento-carousel/manifest.json", import.meta.url), "utf8"),
+);
 
 const requiredHtml = [
   'class="video-slider"',
@@ -15,15 +18,23 @@ const requiredHtml = [
   'href="#film35"',
   'id="film35"',
   "MEMENTO 35mm",
-  "assets/memento-cover.jpg",
-  "assets/memento-landscape.jpg",
+  "assets/memento-carousel/manifest.json",
+  'class="memento-carousel"',
+  'class="memento-viewport"',
+  'class="memento-track"',
+  'class="memento-prev"',
+  'class="memento-next"',
+  'id="commercials"',
+  'class="video-slider commercial-slider"',
   'href="#shortfilms"',
   'id="shortfilms"',
   'href="#actor"',
   'id="actor"',
   "player.vimeo.com/video/1163724360",
   "player.vimeo.com/video/1038807040",
-  'data-target-slide="5"',
+  'data-target-slide="0"',
+  'data-target-slide="3"',
+  'data-target-slide="4"',
 ];
 
 for (const snippet of requiredHtml) {
@@ -52,58 +63,64 @@ assert.match(
 );
 assert.match(
   html,
-  /function buildLoopSlides\(\)/,
-  "Expected slider to build cloned slide sets for a seamless loop",
+  /const mementoViewport = document\.querySelector\("\.memento-viewport"\)/,
+  "Expected the MEMENTO carousel to bind to its viewport",
 );
 assert.match(
   html,
-  /clone\.dataset\.clone = "true"/,
-  "Expected cloned slides to be marked as loop clones",
+  /fetch\("assets\/memento-carousel\/manifest\.json"\)/,
+  "Expected the MEMENTO carousel to load its slide manifest",
 );
 assert.match(
   html,
-  /function moveSlide\(direction\)/,
-  "Expected next and previous buttons to move physically by direction",
+  /function bindMementoCarousel\(items\)/,
+  "Expected the MEMENTO carousel to build slides from manifest data",
 );
 assert.match(
   html,
-  /let isAnimating = false/,
-  "Expected slider to guard against rapid clicks during transitions",
+  /function showMementoSlide\(index, behavior = "smooth"\)/,
+  "Expected the MEMENTO carousel to move by slide index",
 );
 assert.match(
   html,
-  /let pendingDirection = 0/,
-  "Expected slider to queue one adjacent move during rapid clicks",
+  /new IntersectionObserver\(/,
+  "Expected the MEMENTO carousel to track the active slide as it scrolls",
 );
 assert.match(
   html,
-  /function handleTrackTransitionEnd\(event\)/,
-  "Expected slider to reset loop state after the track transition ends",
+  /mementoSlides\[mementoIndex\]\.scrollIntoView\(\{/,
+  "Expected the MEMENTO carousel to center the selected slide",
 );
 assert.match(
   html,
-  /if \(event\.target !== track\) return/,
-  "Expected slider to ignore transitionend events from child elements",
+  /mementoTrack\.replaceChildren\(/,
+  "Expected the MEMENTO carousel to replace the placeholder track contents",
 );
 assert.match(
   html,
-  /const viewport = document\.querySelector\("\.slider-viewport"\)/,
-  "Expected drag handling to attach to the slider viewport",
+  /frame\.addEventListener\("click", async \(event\) => \{/,
+  "Expected MEMENTO frames to enter fullscreen on click",
 );
 assert.match(
   html,
-  /viewport\.addEventListener\("pointerdown"/,
-  "Expected pointer drag to start horizontal slider movement",
+  /function exitMementoFullscreen\(\)/,
+  "Expected fullscreen clicks to toggle back out when already expanded",
 );
 assert.match(
   html,
-  /function finishDrag\(\)/,
-  "Expected drag handling to decide whether to move to an adjacent video",
+  /const overlay = document\.createElement\("div"\)/,
+  "Expected the MEMENTO frame to open an overlay when fullscreen API is unavailable",
+);
+assert.match(html, /overlay\.className = "memento-overlay"/, "Expected the MEMENTO overlay container");
+assert.match(
+  html,
+  /mementoPrev\?\.addEventListener\("click"/,
+  "Expected the MEMENTO carousel to wire the previous button",
 );
 assert.match(
   html,
-  /activeIndex = \(activeIndex \+ direction \+ slideCount\) % slideCount/,
-  "Expected slider navigation to loop infinitely",
+  /mementoNext\?\.addEventListener\("click"/,
+  "Expected the MEMENTO carousel to wire the next button",
 );
 assert.match(
   html,
@@ -133,8 +150,18 @@ assert.match(
   /\.video-track \{[\s\S]*?gap: 0;/,
   "Expected videos in the track to sit flush with no gap",
 );
-assert.match(css, /\.memento-book/, "Expected CSS for the MEMENTO book section");
-assert.match(css, /\.memento-landscape/, "Expected CSS for the MEMENTO landscape spread");
+assert.match(css, /\.memento-intro/, "Expected CSS for the MEMENTO intro block");
+assert.match(css, /\.memento-carousel/, "Expected CSS for the MEMENTO carousel");
+assert.match(css, /\.memento-slide/, "Expected CSS for the MEMENTO slide cards");
+assert.match(css, /\.memento-controls/, "Expected CSS for the MEMENTO controls");
+assert.match(css, /\.memento-frame \{[\s\S]*?height:/, "Expected a fixed visual height for each MEMENTO frame");
+assert.match(css, /\.memento-frame img \{[\s\S]*?object-fit:\s*contain;/, "Expected MEMENTO images to keep their aspect ratio");
+assert.match(css, /\.memento-frame:fullscreen/, "Expected fullscreen styling for the MEMENTO frame");
+assert.match(css, /\.memento-overlay/, "Expected fallback overlay styling for the MEMENTO frame");
+assert.match(css, /body\.memento-fullscreen-lock/, "Expected body lock styling while the MEMENTO frame is expanded");
+
+assert.equal(manifest.length, 84, "Expected the MEMENTO manifest to include every photo in the folder");
+assert.ok(manifest.every((item) => item.src && item.label && item.alt), "Expected manifest entries to be complete");
 
 const projectListHtml = html.match(/<div class="project-list">[\s\S]*?<\/div>/)?.[0] ?? "";
 assert.ok(projectListHtml, "Expected a project list for shortfilms");
@@ -146,4 +173,9 @@ assert.match(
   html,
   /document\.querySelectorAll\("\.project-trigger"\)/,
   "Expected project triggers to connect shortfilm items to the in-page slider",
+);
+assert.match(
+  html,
+  /Commercials/,
+  "Expected a separate commercials section for Chevrolet S10 Max",
 );
