@@ -14,27 +14,26 @@ const requiredHtml = [
   'data-slide="0"',
   'class="slider-prev"',
   'class="slider-next"',
-  "Director &amp; Photographer",
-  'href="#film35"',
-  'id="film35"',
-  "MEMENTO 35mm",
+  "FILM",
+  'href="#film"',
+  'id="film"',
+  'href="#photography"',
+  'id="photography"',
+  "PHOTOGRAPHY",
+  "35mm by Brian Hansen",
   "assets/memento-carousel/manifest.json",
   'class="memento-carousel"',
   'class="memento-viewport"',
   'class="memento-track"',
   'class="memento-prev"',
   'class="memento-next"',
-  'id="commercials"',
-  'class="video-slider commercial-slider"',
-  'href="#shortfilms"',
-  'id="shortfilms"',
   'href="#actor"',
   'id="actor"',
+  "PLACEBO",
+  "nowness.com/series/lovesick/placebo",
   "player.vimeo.com/video/1163724360",
   "player.vimeo.com/video/1038807040",
-  'data-target-slide="0"',
-  'data-target-slide="3"',
-  'data-target-slide="4"',
+  "player.vimeo.com/video/1160375315",
 ];
 
 for (const snippet of requiredHtml) {
@@ -150,7 +149,6 @@ assert.match(
   /\.video-track \{[\s\S]*?gap: 0;/,
   "Expected videos in the track to sit flush with no gap",
 );
-assert.match(css, /\.memento-intro/, "Expected CSS for the MEMENTO intro block");
 assert.match(css, /\.memento-carousel/, "Expected CSS for the MEMENTO carousel");
 assert.match(css, /\.memento-slide/, "Expected CSS for the MEMENTO slide cards");
 assert.match(css, /\.memento-controls/, "Expected CSS for the MEMENTO controls");
@@ -162,20 +160,3 @@ assert.match(css, /body\.memento-fullscreen-lock/, "Expected body lock styling w
 
 assert.equal(manifest.length, 84, "Expected the MEMENTO manifest to include every photo in the folder");
 assert.ok(manifest.every((item) => item.src && item.label && item.alt), "Expected manifest entries to be complete");
-
-const projectListHtml = html.match(/<div class="project-list">[\s\S]*?<\/div>/)?.[0] ?? "";
-assert.ok(projectListHtml, "Expected a project list for shortfilms");
-assert.ok(
-  !projectListHtml.includes('href="https://vimeo.com/'),
-  "Expected shortfilm projects to trigger in-page playback instead of opening Vimeo",
-);
-assert.match(
-  html,
-  /document\.querySelectorAll\("\.project-trigger"\)/,
-  "Expected project triggers to connect shortfilm items to the in-page slider",
-);
-assert.match(
-  html,
-  /Commercials/,
-  "Expected a separate commercials section for Chevrolet S10 Max",
-);
