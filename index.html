@@ -8,606 +8,1271 @@
       content="Portfolio de Brian Hansen: director y fotografo con trabajos en video, shortfilms y fotografia 35mm."
     />
     <title>Brian Hansen | Director &amp; Photographer</title>
-    <link rel="preconnect" href="https://player.vimeo.com" />
-    <link rel="preconnect" href="https://i.vimeocdn.com" />
-    <link rel="stylesheet" href="styles.css" />
+    <style>
+      :root {
+        --ink: #191917;
+        --muted: #77736b;
+        --paper: #f7f5ef;
+        --soft: #ebe7dd;
+        --line: rgba(25, 25, 23, 0.14);
+        --white: #fffefa;
+        --max: 1180px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      img,
+      video,
+      iframe {
+        display: block;
+        width: 100%;
+      }
+
+      video,
+      iframe {
+        height: 100%;
+        border: 0;
+      }
+
+      .site-header {
+        position: fixed;
+        z-index: 30;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 20px clamp(16px, 3.2vw, 48px);
+        background: rgba(247, 245, 239, 0.82);
+        border-bottom: 1px solid rgba(25, 25, 23, 0.08);
+        backdrop-filter: blur(16px);
+      }
+
+      .brand,
+      .nav-links,
+      .eyebrow,
+      .meta,
+      .slider-controls,
+      .button,
+      .text-link,
+      .section-count {
+        text-transform: uppercase;
+        letter-spacing: 0;
+        font-size: 12px;
+        font-weight: 750;
+      }
+
+      .brand {
+        white-space: nowrap;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: clamp(10px, 1.8vw, 26px);
+        color: var(--muted);
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .nav-links a {
+        padding: 6px 0;
+      }
+
+      .nav-links a:hover {
+        color: var(--ink);
+      }
+
+      main {
+        width: min(var(--max), calc(100% - 36px));
+        margin: 0 auto;
+        padding: 92px 0 64px;
+      }
+
+      .section {
+        padding: clamp(72px, 8vw, 120px) 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .section:first-child {
+        border-top: 0;
+      }
+
+      .section-heading {
+        display: grid;
+        grid-template-columns: minmax(110px, 0.25fr) minmax(0, 1fr);
+        gap: 20px;
+        align-items: start;
+        margin-bottom: 30px;
+      }
+
+      .section-heading h1,
+      .section-heading h2 {
+        margin: 0;
+        line-height: 0.92;
+        text-transform: uppercase;
+        font-size: clamp(28px, 4.8vw, 72px);
+      }
+
+      .section-heading-copy {
+        display: grid;
+        gap: 10px;
+      }
+
+      .eyebrow,
+      .meta {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .section-count {
+        color: var(--muted);
+        white-space: nowrap;
+      }
+
+      .slider-count {
+        pointer-events: none;
+      }
+
+      .hero {
+        padding-top: 10px;
+      }
+
+      .video-slider,
+      .photography-slider,
+      .ambulante-slider {
+        position: relative;
+      }
+
+      .slider-viewport {
+        position: relative;
+        overflow: hidden;
+        min-height: clamp(380px, 50vw, 680px);
+        cursor: grab;
+        touch-action: pan-y;
+        user-select: none;
+      }
+
+      .slider-viewport.is-dragging {
+        cursor: grabbing;
+      }
+
+      .video-track,
+      .photography-track {
+        display: flex;
+        align-items: flex-start;
+        gap: 0;
+        transform: translateX(0);
+        transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: transform;
+      }
+
+      .video-slide,
+      .photography-slide {
+        flex: 0 0 min(68vw, 860px);
+        display: grid;
+        gap: 14px;
+        margin: 0;
+        opacity: 0.5;
+        transition: opacity 320ms ease;
+      }
+
+      .video-slide.is-active,
+      .photography-slide.is-active {
+        opacity: 1;
+      }
+
+      .video-slide .slide-caption,
+      .photography-slide .photography-caption {
+        opacity: 0.32;
+        transition: opacity 320ms ease;
+      }
+
+      .video-slide.is-active .slide-caption,
+      .photography-slide.is-active .photography-caption {
+        opacity: 1;
+      }
+
+      .video-track.is-loop-resetting .video-slide,
+      .photography-track.is-loop-resetting .photography-slide {
+        transition: none;
+      }
+
+      .video-embed,
+      .photography-frame,
+      .memento-cover {
+        position: relative;
+        overflow: hidden;
+        background: var(--soft);
+      }
+
+      .video-embed {
+        aspect-ratio: 16 / 9;
+      }
+
+      .photography-frame {
+        height: clamp(300px, 40vw, 540px);
+      }
+
+      .photography-slide.is-portrait {
+        justify-items: center;
+      }
+
+      .photography-slide.is-portrait .photography-frame {
+        width: min(46vw, 240px);
+      }
+
+      .video-embed img,
+      .video-embed iframe,
+      .video-embed video,
+      .photography-frame img,
+      .memento-cover img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .video-embed img,
+      .photography-frame img,
+      .memento-cover img {
+        object-fit: cover;
+      }
+
+      .video-embed img {
+        filter: saturate(0.7) contrast(0.95) brightness(1.04);
+        transition: opacity 220ms ease, transform 420ms ease;
+      }
+
+      .video-slide.is-active .video-embed:hover img {
+        transform: scale(1.016);
+      }
+
+      .video-embed iframe {
+        z-index: 2;
+        background: #000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 180ms ease;
+      }
+
+      .video-embed video {
+        z-index: 2;
+        background: #000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 180ms ease;
+      }
+
+      .video-slide.is-playing .video-embed iframe {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .video-slide.is-playing .video-embed video {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .play-toggle {
+        position: absolute;
+        inset: auto 14px 14px auto;
+        z-index: 3;
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #fff;
+        font-size: 0;
+        filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.55));
+        transition: opacity 180ms ease, transform 180ms ease;
+      }
+
+      .play-toggle::before {
+        content: "▶";
+        font-size: 22px;
+        line-height: 1;
+      }
+
+      .play-toggle:hover {
+        transform: scale(1.08);
+      }
+
+      .video-slide.is-playing .play-toggle {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .slide-caption {
+        display: grid;
+        gap: 7px;
+      }
+
+      .slide-caption h2,
+      .slide-caption p {
+        margin: 0;
+      }
+
+      .slide-caption h2 {
+        text-transform: uppercase;
+        font-size: 18px;
+        line-height: 1.06;
+      }
+
+      .slide-caption p {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.45;
+      }
+
+      .slide-caption .description {
+        white-space: pre-line;
+      }
+
+      .slide-caption .credits-columns {
+        column-count: 2;
+        column-gap: clamp(24px, 4vw, 56px);
+        column-fill: balance;
+      }
+
+      .slider-controls {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        min-height: 0;
+        margin: 0;
+        pointer-events: none;
+      }
+
+      .video-slider .slider-controls,
+      .ambulante-slider .slider-controls {
+        --slider-control-y: min(19.125vw, 241.875px);
+      }
+
+      .photography-slider .slider-controls {
+        --slider-control-y: calc(clamp(300px, 40vw, 540px) / 2);
+      }
+
+      .slider-controls button {
+        position: absolute;
+        top: var(--slider-control-y);
+        transform: translateY(-50%);
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.42);
+        color: var(--muted);
+        font-size: 20px;
+        line-height: 1;
+        pointer-events: auto;
+      }
+
+      .slider-controls button:hover {
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .slider-controls button:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+
+      .slider-prev {
+        left: 10px;
+      }
+
+      .slider-next {
+        right: 10px;
+      }
+
+      .slider-count {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        color: var(--ink);
+      }
+
+      .photography-count {
+        color: var(--muted);
+      }
+
+      .photography-slide {
+        gap: 12px;
+      }
+
+      .photography-frame {
+        border: 1px solid var(--line);
+      }
+
+      .photography-caption {
+        text-align: center;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .memento-block {
+        display: grid;
+        gap: 16px;
+        align-items: start;
+        max-width: 980px;
+      }
+
+      .memento-cover {
+        width: min(100%, 380px);
+        aspect-ratio: 3 / 4;
+        margin: 0;
+        border: 1px solid var(--line);
+      }
+
+      .memento-cover-static {
+        display: block;
+        width: min(68vw, 860px);
+        height: auto;
+        margin: 0 auto;
+      }
+
+      .memento-note {
+        width: min(68vw, 860px);
+        margin: 14px auto 0;
+        text-align: center;
+      }
+
+      .actor-feature {
+        width: min(68vw, 860px);
+        margin: 0 auto;
+      }
+
+      .memento-copy,
+      .memento-note,
+      .actor-copy {
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .memento-copy p,
+      .memento-note p,
+      .actor-copy p {
+        margin: 0 0 14px;
+      }
+
+      .memento-buy {
+        display: inline-block;
+        padding-bottom: 3px;
+        border-bottom: 1px solid var(--line);
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+
+      .actor-credits {
+        margin-top: 7px;
+      }
+
+      .actor-copy {
+        width: min(68vw, 860px);
+        margin: 18px auto 0;
+        text-align: center;
+      }
+
+      .bio-copy {
+        width: min(68vw, 860px);
+        margin: 0 auto;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.65;
+      }
+
+      .bio-copy p {
+        margin: 0 0 18px;
+      }
+
+      .bio-copy p:last-child {
+        margin-bottom: 0;
+      }
+
+      .ambulante-slider .video-slide {
+        flex-basis: min(68vw, 860px);
+      }
+
+      .actor-video {
+        max-width: 760px;
+      }
+
+      .actor-video .video-embed {
+        aspect-ratio: 16 / 9;
+      }
+
+      .contact-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 0 16px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.42);
+      }
+
+      .button:hover {
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      @media (max-width: 740px) {
+        .slide-caption .credits-columns {
+          column-count: 1;
+        }
+
+        .site-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        main {
+          width: min(var(--max), calc(100% - 22px));
+          padding-top: 126px;
+        }
+
+        .section-heading {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+
+        .video-slide,
+        .photography-slide,
+        .ambulante-slider .video-slide {
+          flex-basis: 88vw;
+        }
+
+        .photography-frame {
+          height: clamp(300px, 70vw, 500px);
+        }
+
+        .photography-slide.is-portrait .photography-frame {
+          width: min(72vw, 300px);
+        }
+
+        .memento-cover-static {
+          width: 88vw;
+        }
+
+        .memento-note {
+          width: 88vw;
+        }
+
+        .actor-feature {
+          width: 88vw;
+        }
+
+        .actor-copy {
+          width: 88vw;
+        }
+
+        .bio-copy {
+          width: 88vw;
+        }
+
+        .video-slider .slider-controls,
+        .ambulante-slider .slider-controls {
+          --slider-control-y: 24.75vw;
+        }
+
+        .photography-slider .slider-controls {
+          --slider-control-y: calc(clamp(300px, 70vw, 500px) / 2);
+        }
+
+        .slider-prev {
+          left: 4px;
+        }
+
+        .slider-next {
+          right: 4px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <header class="site-header" aria-label="Navegacion principal">
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Brian Hansen inicio">Brian Hansen</a>
       <nav class="nav-links" aria-label="Secciones">
         <a href="#film">Film</a>
-        <a href="#photography">Photography</a>
+        <a href="#photography">Still Photo</a>
+        <a href="#memento">Memento</a>
+        <a href="#ambulante">Taller de cine</a>
         <a href="#actor">Selected acting work</a>
+        <a href="#bio">Bio</a>
         <a href="#contact">Contact</a>
       </nav>
     </header>
 
     <main id="top">
-      <section class="hero" id="film" aria-labelledby="hero-title">
-        <div class="hero-heading">
-          <h2 id="hero-title">FILM</h2>
+      <section class="section hero" id="film" aria-labelledby="film-title">
+        <div class="section-heading">
+          <div class="section-heading-copy">
+            <h1 id="film-title">FILM</h1>
+            <span class="section-count film-count" aria-live="polite">01 / 06</span>
+          </div>
         </div>
 
-        <section class="video-slider" aria-label="Slider de videos destacados">
+        <section class="video-slider" aria-label="Carrusel de videos de film">
           <div class="slider-viewport">
-            <div class="video-track">
-              <article class="video-slide is-active" data-slide="0">
-                <div class="video-embed">
-                  <img
-                    src="https://i.vimeocdn.com/video/2071306256-d37beba1914ae147e707527c3e86667fc1a6af97c6951a404f28686cd6ac36c1-d_1280?region=us"
-                    alt="Still de No More Movies"
-                  />
-                  <iframe
-                    title="No More Movies"
-                    data-src="https://player.vimeo.com/video/1038807040?autoplay=1&title=0&byline=0&portrait=0"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen
-                  ></iframe>
-                  <button class="play-toggle" type="button" aria-label="Reproducir No More Movies">Play</button>
-                </div>
-                <div class="slide-caption">
-                  <p class="meta">Short film / 2025</p>
-                  <h2>No More Movies</h2>
-                  <p>Through a man’s Super 8mm camera, we see a young woman, slices of a shared life. Between old movies and motorcycle trips, we glimpse the longing for what might have been.</p>
-                </div>
-              </article>
+            <div class="video-track"></div>
+          </div>
+          <div class="slider-controls" aria-label="Controles del carrusel de film">
+            <button class="slider-prev film-prev" type="button" aria-label="Video anterior">‹</button>
+            <button class="slider-next film-next" type="button" aria-label="Video siguiente">›</button>
+          </div>
+        </section>
+      </section>
 
-              <article class="video-slide" data-slide="1">
-                <div class="video-embed">
-                  <img
-                    src="https://i.vimeocdn.com/video/2115269432-40ba383ea2861d95f8d03ea176ce89d746c56f8c83f5751fd62368b0796d7a76-d_1280?region=us"
-                    alt="Still de Chevrolet S10 Max"
-                  />
-                  <iframe
-                    title="Chevrolet S10 Max"
-                    data-src="https://player.vimeo.com/video/1160375315?autoplay=1&title=0&byline=0&portrait=0"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen
-                  ></iframe>
-                  <button class="play-toggle" type="button" aria-label="Reproducir Chevrolet S10 Max">Play</button>
-                </div>
-                <div class="slide-caption">
-                  <p class="meta">Commercial / 2025</p>
-                  <h2>Chevrolet S10 Max</h2>
-                  <p>Trabajo comercial con escala, ritmo y direccion de imagen.</p>
-                </div>
-              </article>
+      <section class="section" id="photography" aria-labelledby="photography-title">
+        <div class="section-heading">
+          <div class="section-heading-copy">
+            <h2 id="photography-title">STILL PHOTO</h2>
+            <span class="section-count photography-count" aria-live="polite">01 / 23</span>
+          </div>
+        </div>
 
-              <article class="video-slide" data-slide="2">
-                <div class="video-embed">
-                  <img
-                    src="https://i.vimeocdn.com/video/2115280532-c2b528289d52d48f1424326a07df5d8d3e3b87e5ed878d24eaed14f46be901dd-d_1280?region=us"
-                    alt="Still de Ludmila Di Pasquale"
-                  />
-                  <iframe
-                    title="Ludmila Di Pasquale"
-                    data-src="https://player.vimeo.com/video/1160387061?autoplay=1&title=0&byline=0&portrait=0"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen
-                  ></iframe>
-                  <button class="play-toggle" type="button" aria-label="Reproducir Ludmila Di Pasquale">Play</button>
-                </div>
-                <div class="slide-caption">
-                  <p class="meta">VHS diaries / 2026</p>
-                  <h2>Ludmila Di Pasquale</h2>
-                  <p>Diario visual con pulso analogico, textura y un mood intimo.</p>
-                </div>
-              </article>
+        <section class="photography-slider" aria-label="Carrusel de fotografia">
+          <div class="slider-viewport">
+            <div class="photography-track"></div>
+          </div>
+          <div class="slider-controls" aria-label="Controles de fotografia">
+            <button class="slider-prev photography-prev" type="button" aria-label="Foto anterior">‹</button>
+            <button class="slider-next photography-next" type="button" aria-label="Foto siguiente">›</button>
+          </div>
+        </section>
+      </section>
 
-              <article class="video-slide" data-slide="3">
-                <div class="video-embed">
-                  <img
-                    src="https://i.vimeocdn.com/video/2115285097-c796450a4f90e58082576130c199a78e72ada7231e82ee15c2a05579bdffb4ff-d_1280?region=us"
-                    alt="Still de Bonita de Coco Rodriguez"
-                  />
-                  <iframe
-                    title="Bonita - Coco Rodriguez"
-                    data-src="https://player.vimeo.com/video/1160390224?autoplay=1&title=0&byline=0&portrait=0"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen
-                  ></iframe>
-                  <button class="play-toggle" type="button" aria-label="Reproducir Bonita">Play</button>
-                </div>
-                <div class="slide-caption">
-                  <p class="meta">Music video / 2021</p>
-                  <h2>Bonita</h2>
-                  <p>Coco Rodriguez. Una pieza de color suave, movimiento y retrato musical.</p>
-                </div>
-              </article>
+      <section class="section" id="memento" aria-labelledby="memento-title">
+        <div class="section-heading">
+          <div class="section-heading-copy">
+            <p class="eyebrow">Libro de fotografias 35mm</p>
+            <h2 id="memento-title">MEMENTO</h2>
+          </div>
+        </div>
 
-              <article class="video-slide" data-slide="4">
-                <div class="video-embed">
-                  <img
-                    src="https://i.vimeocdn.com/video/2120066366-47542d2ae4c9530324d11126ade38a6db3bd0c8433f5620259aca87ca85e91a3-d_1280?region=us"
-                    alt="Still de TULU"
-                  />
-                  <iframe
-                    title="TULU"
-                    data-src="https://player.vimeo.com/video/1163724360?autoplay=1&title=0&byline=0&portrait=0"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen
-                  ></iframe>
-                  <button class="play-toggle" type="button" aria-label="Reproducir TULU">Play</button>
-                </div>
-                <div class="slide-caption">
-                  <p class="meta">Featured / 2024</p>
-                  <h2>TULU</h2>
-                  <p>A night out in Mexico City. Shot and edited by Brian Hansen.</p>
-                </div>
-              </article>
+        <img
+          class="memento-cover-static"
+          src="assets/memento/memento-cover.jpg"
+          alt="Tapa del libro Memento"
+        />
 
-              <article class="video-slide" data-slide="5">
-                <div class="video-embed">
-                  <img
-                    src="https://i.vimeocdn.com/video/2115272348-2d9ceb173dfac9122493ea0d6aaea3e7dd2c75ab7226b50a33361fa3407226e4-d_1280?region=us"
-                    alt="Still de Nacozari Rifa"
-                  />
-                  <iframe
-                    title="NACOZARI RIFA!"
-                    data-src="https://player.vimeo.com/video/1160381965?autoplay=1&title=0&byline=0&portrait=0"
-                    allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen
-                  ></iframe>
-                  <button class="play-toggle" type="button" aria-label="Reproducir Nacozari Rifa">Play</button>
-                </div>
-                <div class="slide-caption">
-                  <p class="meta">Documentary portrait / 2023</p>
-                  <h2>NACOZARI RIFA!</h2>
-                  <p>Retrato comunitario con energia de calle y textura documental.</p>
-                </div>
-              </article>
+        <div class="memento-note">
+          <p>Disponible para compra en Amazon. &copy; Brian Hansen, 2026.</p>
+          <a class="memento-buy" href="https://www.amazon.com/" target="_blank" rel="noreferrer">Amazon</a>
+        </div>
+      </section>
+
+      <section class="section" id="ambulante" aria-labelledby="ambulante-title">
+        <div class="section-heading">
+          <div class="section-heading-copy">
+            <h2 id="ambulante-title">TALLER<br />DE&nbsp;CINE</h2>
+            <span class="section-count ambulante-count" aria-live="polite">01 / 07</span>
+          </div>
+        </div>
+
+        <section class="ambulante-slider" aria-label="Carrusel de videos del taller">
+          <div class="slider-viewport">
+            <div class="video-track"></div>
+          </div>
+          <div class="slider-controls" aria-label="Controles del taller">
+            <button class="slider-prev ambulante-prev" type="button" aria-label="Video anterior">‹</button>
+            <button class="slider-next ambulante-next" type="button" aria-label="Video siguiente">›</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="section" id="actor" aria-labelledby="actor-title">
+        <div class="section-heading">
+          <div class="section-heading-copy">
+            <h2 id="actor-title">SELECTED ACTING WORK</h2>
+          </div>
+        </div>
+
+        <article class="video-slide is-active actor-feature">
+          <div class="video-embed">
+            <img src="assets/actor/PLACEBO%20COVER.png" alt="Portada de PLACEBO" />
+            <video preload="metadata" playsinline src="assets/actor/PLACEBO-web.m4v"></video>
+            <button class="play-toggle" type="button" aria-label="Reproducir PLACEBO">Play</button>
+          </div>
+          <div class="slide-caption">
+            <h2>PLACEBO</h2>
+            <div class="actor-credits">
+              <p>
+                Writer &amp; Director: Sage Bennett<br />
+                DOP: Alexa Bas<br />
+                Starring: Sage Bennett &amp; Brian Hansen<br />
+                Colorist: Nadia Khairat
+              </p>
             </div>
           </div>
+        </article>
 
-          <div class="slider-controls" aria-label="Controles del slider">
-            <button class="slider-prev" type="button">Prev</button>
-            <span class="slider-count" aria-live="polite">01 / 06</span>
-            <button class="slider-next" type="button">Next</button>
-          </div>
-        </section>
-
+        <div class="actor-copy">
+          <p>
+            "Short love affairs can leave you feeling less justified in your grief because it was never
+            supposed to be serious. I wanted to transform those painpoints into art."
+          </p>
+        </div>
       </section>
 
-      <section class="section film35-section" id="photography" aria-labelledby="photography-title">
+      <section class="section" id="bio" aria-labelledby="bio-title">
         <div class="section-heading">
-          <p class="eyebrow">35mm by Brian Hansen</p>
-          <h2 id="photography-title">PHOTOGRAPHY</h2>
+          <div class="section-heading-copy">
+            <h2 id="bio-title">BIO</h2>
+          </div>
         </div>
-        <section class="memento-carousel" aria-label="Carrusel de la serie MEMENTO">
-          <div class="memento-viewport">
-            <div class="memento-track"></div>
-          </div>
 
-          <div class="memento-controls" aria-label="Controles del carrusel de MEMENTO">
-            <button class="memento-prev" type="button" aria-label="Imagen anterior de MEMENTO">Prev</button>
-            <span class="memento-count" aria-live="polite">-- / --</span>
-            <button class="memento-next" type="button" aria-label="Imagen siguiente de MEMENTO">Next</button>
-          </div>
-        </section>
+        <div class="bio-copy">
+          <p>
+            <strong>Brian Hansen</strong> is an actor, self-taught photographer, and lifelong cinephile,
+            born in Patagonia, Argentina, in October 1987. He began his acting career in Buenos Aires before
+            relocating to Mexico in 2014, where he continued performing while pursuing his path as a film
+            director.
+          </p>
+          <p>
+            Alongside his artistic work, Brian has developed a diverse range of physical skills that enrich
+            his performances. He is an experienced motorcyclist and driver, with training in horseback riding,
+            firearms handling, and fencing.
+          </p>
+          <p>
+            A native Spanish speaker who is fluent in English and Italian, Brian brings depth, adaptability,
+            and presence to every role.
+          </p>
+          <p>
+            He recently completed his first 35mm photography book, <em>Memento</em>—a visual exploration of
+            uncanny, dreamlike moments—which is available for purchase on Amazon. He is currently working on
+            his feature-film directorial debut, <em>La Venganza de Antonio Burboa</em>, a western set in
+            Cananea, Sonora—the cradle of the Mexican Revolution.
+          </p>
+        </div>
       </section>
 
-      <section class="section actor-section" id="actor" aria-labelledby="actor-title">
+      <section class="section" id="contact" aria-labelledby="contact-title">
         <div class="section-heading">
-          <p class="eyebrow">Actor</p>
-          <h2 id="actor-title">SELECTED ACTING WORK</h2>
-        </div>
-        <div class="actor-video">
-          <div class="video-embed">
-            <iframe
-              title="PLACEBO"
-              src="https://www.nowness.com/series/lovesick/placebo?fbclid=PAY2xjawI0JONleHRuA2FlbQIxMAABpsi8sBf8oPOTFtWlKZIb5MXxdnWegB4OguPXK0p_mbwuksIQPZph5daAcw_aem_NPmcIexEnsTLD5tCZjm51g"
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowfullscreen
-            ></iframe>
+          <div class="section-heading-copy">
+            <p class="eyebrow">Bookings and reels</p>
+            <h2 id="contact-title">CONTACT</h2>
           </div>
         </div>
-      </section>
-
-      <section class="contact-section" id="contact" aria-labelledby="contact-title">
-        <p class="eyebrow">Bookings and reels</p>
-        <h2 id="contact-title">Hablemos de la proxima filmacion.</h2>
         <div class="contact-actions">
-          <a class="button primary" href="mailto:filmbyhansen@gmail.com">filmbyhansen@gmail.com</a>
-          <a class="button secondary" href="https://www.instagram.com/whoisbrianhansen/" target="_blank" rel="noreferrer">
-            Instagram
-          </a>
-          <a class="button secondary" href="https://vimeo.com/user194270253" target="_blank" rel="noreferrer">
-            Vimeo
-          </a>
+          <a class="button" href="mailto:filmbyhansen@gmail.com">filmbyhansen@gmail.com</a>
+          <a class="button" href="https://www.instagram.com/whoisbrianhansen/" target="_blank" rel="noreferrer">Instagram</a>
+          <a class="button" href="https://vimeo.com/user194270253" target="_blank" rel="noreferrer">Vimeo</a>
         </div>
       </section>
     </main>
 
     <script>
-      const viewport = document.querySelector(".slider-viewport");
-      const track = document.querySelector(".video-track");
-      const originalSlides = Array.from(document.querySelectorAll(".video-slide"));
-      const previousButton = document.querySelector(".slider-prev");
-      const nextButton = document.querySelector(".slider-next");
-      const count = document.querySelector(".slider-count");
-      const mementoViewport = document.querySelector(".memento-viewport");
-      const mementoTrack = document.querySelector(".memento-track");
-      const mementoPrev = document.querySelector(".memento-prev");
-      const mementoNext = document.querySelector(".memento-next");
-      const mementoCount = document.querySelector(".memento-count");
-      const slideCount = originalSlides.length;
-      let slides = [];
-      let activeIndex = 0;
-      let activeTrackIndex = slideCount;
-      let currentTranslate = 0;
-      let dragStartX = 0;
-      let dragDeltaX = 0;
-      let isDragging = false;
-      let hasDragged = false;
-      let isAnimating = false;
-      let pendingDirection = 0;
-      let mementoSlides = [];
-      let mementoIndex = 0;
-      let mementoObserver = null;
-      let expandedMementoSource = null;
-      let expandedMementoOverlay = null;
+      const filmItems = [
+        {
+          title: "No More Movies",
+          meta: "Short film / 2025",
+          desc:
+            "Through a man’s Super 8mm camera, we see a young woman, slices of a shared life. Between old movies and motorcycle trips, we glimpse the longing for what might have been.",
+          still: "https://i.vimeocdn.com/video/2071306256-d37beba1914ae147e707527c3e86667fc1a6af97c6951a404f28686cd6ac36c1-d_1280?region=us",
+          src: "https://player.vimeo.com/video/1038807040?autoplay=1&title=0&byline=0&portrait=0",
+        },
+        {
+          title: "Chevrolet S10 Max",
+          meta: "Commercial / 2025",
+          desc: `Production Company: Stink Mexico
+Director: Brian Hansen
+MD: Vanessa Hernández
+Executive Producer: Daniela Bonilla
+Assistant Producer: Tom Agüero
+DoP: Miguel De Olaso & Josep Pardo
+Wardrobe: Kawa
+Camera Car: Ultimate Arm
+Camera Caer Driver: George Peters
+Arm Operator: John Maurice Betancourt
+Editor & online: Daniel Balleza
+Sound Design: Emmanuel Romero
+Color Gradding: Lisa Tilinger
+Music: Edy Lan
+Agencia:
+Group Creative Director: Arturo Velázquez Rodriguez
+Creative Directors: Temo & Pamela Anaya
+Agency Producer: Amy Kegan Platok
+Account Manager: Vanessa`,
+          creditsColumns: true,
+          still: "https://i.vimeocdn.com/video/2115269432-40ba383ea2861d95f8d03ea176ce89d746c56f8c83f5751fd62368b0796d7a76-d_1280?region=us",
+          src: "https://player.vimeo.com/video/1160375315?autoplay=1&title=0&byline=0&portrait=0",
+        },
+        {
+          title: "Ludmila Di Pasquale",
+          meta: "VHS diaries / 2026",
+          desc: "A night at a rave in Patagonia. VHS diaries.",
+          still: "https://i.vimeocdn.com/video/2115280532-c2b528289d52d48f1424326a07df5d8d3e3b87e5ed878d24eaed14f46be901dd-d_1280?region=us",
+          src: "https://player.vimeo.com/video/1160387061?autoplay=1&title=0&byline=0&portrait=0",
+        },
+        {
+          title: "Bonita",
+          meta: "Music video / 2021",
+          desc: `Video oficial de "Bonita" de Coco Rodriguez
+Producción de Pangea
+Director: Brian Hansen
+Director de fotografía: Mauricio Padilla
+Montaje: Mauricio Padilla & Diego Zaldivar
+Productor Ejecutivo: Coco Rodriguez
+Colorista: Esteban Robles (Central Films)
+Arte y Vestuario: Pangea`,
+          still: "https://i.vimeocdn.com/video/2115285097-c796450a4f90e58082576130c199a78e72ada7231e82ee15c2a05579bdffb4ff-d_1280?region=us",
+          src: "https://player.vimeo.com/video/1160390224?autoplay=1&title=0&byline=0&portrait=0",
+        },
+        {
+          title: "TULU",
+          meta: "Featured / 2024",
+          desc: `A night out in Mexico City!
+Shot & edited by Brian Hansen`,
+          still: "https://i.vimeocdn.com/video/2120066366-47542d2ae4c9530324d11126ade38a6db3bd0c8433f5620259aca87ca85e91a3-d_1280?region=us",
+          src: "https://player.vimeo.com/video/1163724360?autoplay=1&title=0&byline=0&portrait=0",
+        },
+        {
+          title: "NACOZARI RIFA!",
+          meta: "Documentary portrait / 2023",
+          desc:
+            "A montage exercise that becomes a portrait of a community. Intimate, behind-the-scenes moments captured with a Handycam during a film workshop in a town in northern Mexico.",
+          still: "https://i.vimeocdn.com/video/2115272348-2d9ceb173dfac9122493ea0d6aaea3e7dd2c75ab7226b50a33361fa3407226e4-d_1280?region=us",
+          src: "https://player.vimeo.com/video/1160381965?autoplay=1&title=0&byline=0&portrait=0",
+        },
+      ];
 
-      function createSlideClone(slide) {
+      const photographyItems = [
+        { file: "Caballo Mutante.jpeg", label: "Caballo Mutante" },
+        { file: "1976.jpeg", label: "1976" },
+        { file: "Copenhague.jpeg", label: "Copenhague" },
+        { file: "Puerto Vallarta.jpeg", label: "Puerto Vallarta" },
+        { file: "Cayos Cochinos.jpeg", label: "Cayos Cochinos" },
+        { file: "Cenizas de Rosas.jpeg", label: "Cenizas de Rosas" },
+        { file: "Ooops!.jpeg", label: "Ooops!" },
+        { file: "Hi there!.jpeg", label: "Hi there!" },
+        { file: "Polignano A Mare.jpeg", label: "Polignano A Mare" },
+        { file: "Out of the blue, and into the black.jpeg", label: "Out of the blue, and into the black" },
+        { file: "Vecchio.jpeg", label: "Vecchio" },
+        { file: "Real de Catoce.jpeg", label: "Real de Catoce" },
+        { file: "Tren Porteño.jpeg", label: "Tren Porteño" },
+        { file: "!.jpeg", label: "!" },
+        { file: "Be water my friend....jpeg", label: "Be water my friend..." },
+        { file: "Chupacabras.jpeg", label: "Chupacabras" },
+        { file: "Florida.jpeg", label: "Florida" },
+        { file: "Frame.jpeg", label: "Frame" },
+        { file: "Frisco.jpeg", label: "Frisco" },
+        { file: "Hey you! Get of my cloud!.jpeg", label: "Hey you! Get of my cloud!" },
+        { file: "Lynch.jpeg", label: "Lynch" },
+        { file: "Quote.jpeg", label: "Quote" },
+        { file: "Signs.jpeg", label: "Signs" },
+      ];
+
+      const ambulanteItems = [
+        {
+          title: "Nacozari Viejo (Teaser)",
+          meta: "Taller de cine / 2023",
+          desc: "Don Rubén y “El Gringo” son dos de los últimos habitantes de Nacozari Viejo. Han vivido ahí toda su vida viendo pasar el tiempo desde el porche de su casa. Observan con detenimiento la naturaleza y el cambio de las estaciones. Nacozari Viejo es una exploración de un lugar en el que parece que no pasa nada, pero que oculta la belleza en lo más cotidiano.",
+          still: "https://i.vimeocdn.com/video/1870840110-d001246f33ab6a5cb01eb7798a2541bd3eec8cb5c41e5203bd1689e9716a7e3b-d_1920x1080?r=pad&region=us",
+          src: "https://player.vimeo.com/video/864579655?h=b567b1129c&autoplay=1&title=0&byline=0&portrait=0",
+        },
+        {
+          title: "TOKA: THE GAME MUST GO ON",
+          meta: "Taller de cine / 2026",
+          desc: "Toka is played among women of the four Odham tribes, often compared to modern-day field hockey, its fierce characteristics embodies part of the strength, wisdom, and spirituality that sustain their land.",
+          still: "https://i.vimeocdn.com/video/2161336842-1d5e15912b57f9b3786b0f1a8f09ce3893cdc71197acb7a0a2148bf38d125460-d_1920x1080?r=pad&region=us",
+          src: "https://player.vimeo.com/video/1195455217?h=419ad1c907&autoplay=1&title=0&byline=0&portrait=0",
+        },
+        {
+          title: "Campeón",
+          meta: "Taller de cine / 2023",
+          desc: "Un joven promesa del box en Nacozari cuenta su historia; desde el comienzo de su pasión por el boxeo hasta sus anhelos y problemas familiares.",
+          still: "https://i.vimeocdn.com/video/1870832155-3ca92b34f4cb97ff68918183db5a4479212b006bfbebdfe25ab77e9040d43a0b-d_1920x1080?r=pad&region=us",
+          src: "https://player.vimeo.com/video/857692928?h=e76a6afe87&autoplay=1&title=0&byline=0&portrait=0",
+        },
+        {
+          title: "Grace and grief",
+          meta: "Taller de cine / 2023",
+          desc: "Una joven cierra un ciclo a través de una carta hacia un ser querido fallecido, desahogando su sentir durante la etapa de su duelo.",
+          still: "https://i.vimeocdn.com/video/1870829745-745b8c7a1b5bcf6f376c9f146e38b033684552905b84240442376d90e43fb51b-d_1920x1080?r=pad&region=us",
+          src: "https://player.vimeo.com/video/857680822?h=0686bc61d2&autoplay=1&title=0&byline=0&portrait=0",
+        },
+        {
+          title: "Raíces de mi tierra",
+          meta: "Taller de cine / 2023",
+          desc: "Elia del Sagrario, mejor conocida como Chatita, es una mujer con una fuerte conexión con la naturaleza y la historia. A través de recorridos por hermosos paisajes, Elia nos cuenta sobre su visión de vida y sobre el proceso de construcción de su propio museo que explora a las comunidades que habitaron Charcas, San Luis Potosí, hace cientos de años.",
+          still: "https://i.vimeocdn.com/video/1870825102-b96cd7eaaff94209bd61e8e2b138e1bf4838c05fde67c3c92efa13a68f2426f1-d_1920x1080?r=pad&region=us",
+          src: "https://player.vimeo.com/video/857661245?h=986147d79a&autoplay=1&title=0&byline=0&portrait=0",
+        },
+        {
+          title: "Mientras quede la danza",
+          meta: "Taller de cine / 2023",
+          desc: "Abel es un maestro y coreógrafo de danza folklórica regional mexicana que ha creado un gran legado artístico en Charcas, San Luis Potosí. Después de vivir una etapa de su vida en el alcoholismo, Abel está determinado a no dejar morir el arte en su comunidad y a enfrentarse a las dificultades de la enseñanza en nuestros tiempos.",
+          still: "https://i.vimeocdn.com/video/1870823879-c1b2a58bfd1115601fe8167baf35005cf82e1228ba77331ff94b615f62661606-d_1920x1080?r=pad&region=us",
+          src: "https://player.vimeo.com/video/857655979?h=6227656aa5&autoplay=1&title=0&byline=0&portrait=0",
+        },
+        {
+          title: "Con limón y sal",
+          meta: "Taller de cine / 2023",
+          desc: "Una mujer con el corazón roto le dedica una carta al viaje de la vida, a la familia, la pérdida y el duelo. Un recordatorio de que el amor lo es todo y, con él, no hay límites.",
+          still: "https://i.vimeocdn.com/video/1870832607-74e4ae81b8f6d55d5f9a0655e3a5d9794d5ab9922d2261bbe7275ba6d6976caa-d_1920x1080?r=pad&region=us",
+          src: "https://player.vimeo.com/video/857695655?h=71a02cafda&autoplay=1&title=0&byline=0&portrait=0",
+        },
+      ];
+
+      function mediaTag(item) {
+        if (item.kind === "video") {
+          return `<video preload="metadata" playsinline src="${item.src}"></video>`;
+        }
+        return `<iframe title="${item.title}" data-src="${item.src}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`;
+      }
+
+      function cloneSlide(slide) {
         const clone = slide.cloneNode(true);
         clone.dataset.clone = "true";
         clone.classList.remove("is-active", "is-playing");
-        clone.querySelector("iframe").src = "";
+        const iframe = clone.querySelector("iframe");
+        if (iframe) iframe.src = "";
+        const video = clone.querySelector("video");
+        if (video) {
+          video.pause();
+          video.currentTime = 0;
+        }
         return clone;
       }
 
-      function buildLoopSlides() {
-        track.prepend(...originalSlides.map(createSlideClone));
-        track.append(...originalSlides.map(createSlideClone));
-        slides = Array.from(track.querySelectorAll(".video-slide"));
-      }
-
       function stopSlide(slide) {
+        if (!slide) return;
         const iframe = slide.querySelector("iframe");
-        iframe.src = "";
+        if (iframe) iframe.src = "";
+        const video = slide.querySelector("video");
+        if (video) {
+          video.pause();
+          video.currentTime = 0;
+        }
         slide.classList.remove("is-playing");
       }
 
-      function updateCount() {
-        count.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(slideCount).padStart(2, "0")}`;
-      }
-
-      function updateActiveClasses() {
-        slides.forEach((slide, slideIndex) => {
-          slide.classList.toggle("is-active", slideIndex === activeTrackIndex);
-        });
-      }
-
-      function updateTrackPosition(animate = true) {
-        track.style.transition = animate ? "" : "none";
-        const slide = slides[activeTrackIndex];
-        const slideWidth = slide.offsetWidth;
-        const slideCenter = slide.offsetLeft + slideWidth / 2;
-        const viewportCenter = window.innerWidth / 2;
-        const nextTranslate = viewportCenter - slideCenter;
-        const didMove = Math.abs(nextTranslate - currentTranslate) > 0.5;
-        currentTranslate = nextTranslate;
-        track.style.transform = `translateX(${currentTranslate}px)`;
-        if (!animate) {
-          window.requestAnimationFrame(() => {
-            track.style.transition = "";
-          });
-          return false;
-        }
-        return didMove;
-      }
-
-      function showSlide(index) {
-        pendingDirection = 0;
-        stopSlide(slides[activeTrackIndex]);
-        activeIndex = (index + slideCount) % slideCount;
-        activeTrackIndex = activeIndex + slideCount;
-        updateActiveClasses();
-        updateCount();
-        isAnimating = updateTrackPosition();
-      }
-
-      function moveSlide(direction) {
-        if (isAnimating) {
-          pendingDirection = direction;
+      function playSlide(slide) {
+        if (!slide) return;
+        const video = slide.querySelector("video");
+        if (video) {
+          video.play().catch(() => {});
+          slide.classList.add("is-playing");
           return;
         }
-        stopSlide(slides[activeTrackIndex]);
-        activeTrackIndex += direction;
-        activeIndex = (activeIndex + direction + slideCount) % slideCount;
-        updateActiveClasses();
-        updateCount();
-        isAnimating = updateTrackPosition();
-      }
-
-      function resetLoopPosition() {
-        let resetIndex = activeTrackIndex;
-        if (activeTrackIndex < slideCount) {
-          resetIndex = activeTrackIndex + slideCount;
-        }
-        if (activeTrackIndex >= slideCount * 2) {
-          resetIndex = activeTrackIndex - slideCount;
-        }
-        if (resetIndex !== activeTrackIndex) {
-          activeTrackIndex = resetIndex;
-          updateActiveClasses();
-          updateTrackPosition(false);
-        }
-      }
-
-      function handleTrackTransitionEnd(event) {
-        if (event.target !== track) return;
-        resetLoopPosition();
-        isAnimating = false;
-        if (pendingDirection !== 0) {
-          const queuedDirection = pendingDirection;
-          pendingDirection = 0;
-          window.requestAnimationFrame(() => moveSlide(queuedDirection));
-        }
-      }
-
-      function playSlide(slide) {
         const iframe = slide.querySelector("iframe");
-        if (!iframe.src) {
-          iframe.src = iframe.dataset.src;
-        }
+        if (iframe && !iframe.src) iframe.src = iframe.dataset.src;
         slide.classList.add("is-playing");
       }
 
-      buildLoopSlides();
-      updateActiveClasses();
-      updateCount();
-
-      previousButton.addEventListener("click", () => moveSlide(-1));
-      nextButton.addEventListener("click", () => moveSlide(1));
-      track.addEventListener("transitionend", handleTrackTransitionEnd);
-
-      slides.forEach((slide) => {
-        slide.querySelector(".play-toggle").addEventListener("click", () => playSlide(slide));
-        slide.addEventListener("click", () => {
-          if (hasDragged) return;
-          if (isAnimating) return;
-          if (!slide.classList.contains("is-active")) {
-            stopSlide(slides[activeTrackIndex]);
-            activeTrackIndex = slides.indexOf(slide);
-            activeIndex = Number(slide.dataset.slide);
-            updateActiveClasses();
-            updateCount();
-            isAnimating = updateTrackPosition();
-          }
-        });
-      });
-
-      function startDrag(event) {
-        if (isAnimating || event.target.closest("button")) return;
-        isDragging = true;
-        hasDragged = false;
-        dragStartX = event.clientX;
-        dragDeltaX = 0;
-        track.style.transition = "none";
-        viewport.classList.add("is-dragging");
-        viewport.setPointerCapture(event.pointerId);
+      function buildLoopCarousel(track, items, renderItem) {
+        track.innerHTML = items.map(renderItem).join("");
+        const baseSlides = Array.from(track.children);
+        track.prepend(...baseSlides.map(cloneSlide));
+        track.append(...baseSlides.map(cloneSlide));
+        return Array.from(track.children);
       }
 
-      function dragSlider(event) {
-        if (!isDragging) return;
-        dragDeltaX = event.clientX - dragStartX;
-        if (Math.abs(dragDeltaX) > 6) hasDragged = true;
-        track.style.transform = `translateX(${currentTranslate + dragDeltaX}px)`;
-      }
+      function attachLoopCarousel({
+        track,
+        viewport,
+        prev,
+        next,
+        countEl,
+        items,
+        renderItem,
+        onSelect,
+      }) {
+        if (!track || !viewport || !prev || !next || !countEl || !items.length) return;
 
-      function finishDrag() {
-        if (!isDragging) return;
-        isDragging = false;
-        viewport.classList.remove("is-dragging");
-        track.style.transition = "";
-        if (Math.abs(dragDeltaX) > 90) {
-          moveSlide(dragDeltaX < 0 ? 1 : -1);
-        } else {
-          isAnimating = updateTrackPosition();
+        let slides = buildLoopCarousel(track, items, renderItem);
+        let activeIndex = items.length;
+        let activeRealIndex = 0;
+        let currentTranslate = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragDeltaX = 0;
+        let hasDragged = false;
+        let isAnimating = false;
+        let pendingDirections = [];
+
+        function updateCount() {
+          countEl.textContent = `${String(activeRealIndex + 1).padStart(2, "0")} / ${String(items.length).padStart(2, "0")}`;
         }
-        window.setTimeout(() => {
+
+        function updateActive() {
+          slides.forEach((slide, idx) => slide.classList.toggle("is-active", idx === activeIndex));
+        }
+
+        function position(animate = true) {
+          if (!slides.length) return false;
+          track.style.transition = animate ? "" : "none";
+          const slide = slides[activeIndex];
+          const slideCenter = slide.offsetLeft + slide.offsetWidth / 2;
+          const viewportCenter = viewport.clientWidth / 2;
+          const nextTranslate = viewportCenter - slideCenter;
+          const moved = Math.abs(nextTranslate - currentTranslate) > 0.5;
+          currentTranslate = nextTranslate;
+          track.style.transform = `translateX(${currentTranslate}px)`;
+          if (!animate) {
+            track.getBoundingClientRect();
+            track.style.transition = "";
+          }
+          return moved;
+        }
+
+        function resetLoop() {
+          let resetIndex = activeIndex;
+          if (activeIndex < items.length) resetIndex = activeIndex + items.length;
+          if (activeIndex >= items.length * 2) resetIndex = activeIndex - items.length;
+          if (resetIndex !== activeIndex) {
+            track.classList.add("is-loop-resetting");
+            activeIndex = resetIndex;
+            updateActive();
+            position(false);
+            track.classList.remove("is-loop-resetting");
+          }
+        }
+
+        function handleTransitionEnd(event) {
+          if (event.target !== track) return;
+          resetLoop();
+          isAnimating = false;
+          if (pendingDirections.length) {
+            const queued = pendingDirections.shift();
+            requestAnimationFrame(() => move(queued));
+          }
+        }
+
+        function move(direction) {
+          if (isAnimating) {
+            if (pendingDirections.length < 4) pendingDirections.push(direction);
+            return;
+          }
+          stopSlide(slides[activeIndex]);
+          activeIndex += direction;
+          activeRealIndex = (activeRealIndex + direction + items.length) % items.length;
+          updateActive();
+          updateCount();
+          isAnimating = position();
+        }
+
+        function show(index) {
+          pendingDirections = [];
+          stopSlide(slides[activeIndex]);
+          activeRealIndex = (index + items.length) % items.length;
+          activeIndex = activeRealIndex + items.length;
+          updateActive();
+          updateCount();
+          isAnimating = position();
+        }
+
+        function startDrag(event) {
+          if (isAnimating || event.target.closest("button")) return;
+          isDragging = true;
           hasDragged = false;
-        }, 0);
-      }
-
-      viewport.addEventListener("pointerdown", startDrag);
-      viewport.addEventListener("pointermove", dragSlider);
-      viewport.addEventListener("pointerup", finishDrag);
-      viewport.addEventListener("pointercancel", finishDrag);
-
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "ArrowLeft") moveSlide(-1);
-        if (event.key === "ArrowRight") moveSlide(1);
-      });
-
-      window.addEventListener("resize", updateTrackPosition);
-      updateTrackPosition();
-
-      function updateMementoCount() {
-        if (!mementoCount) return;
-        if (!mementoSlides.length) {
-          mementoCount.textContent = "-- / --";
-          return;
+          dragStartX = event.clientX;
+          dragDeltaX = 0;
+          track.style.transition = "none";
+          viewport.classList.add("is-dragging");
+          viewport.setPointerCapture(event.pointerId);
         }
-        mementoCount.textContent = `${String(mementoIndex + 1).padStart(2, "0")} / ${String(mementoSlides.length).padStart(2, "0")}`;
-      }
 
-      function updateMementoActive() {
-        mementoSlides.forEach((slide, index) => {
-          slide.classList.toggle("is-active", index === mementoIndex);
-        });
-      }
-
-      function showMementoSlide(index, behavior = "smooth") {
-        if (!mementoSlides.length) return;
-        mementoIndex = (index + mementoSlides.length) % mementoSlides.length;
-        updateMementoActive();
-        updateMementoCount();
-        mementoSlides[mementoIndex].scrollIntoView({
-          behavior,
-          block: "nearest",
-          inline: "center",
-        });
-      }
-
-      function exitMementoFullscreen() {
-        if (expandedMementoOverlay) {
-          expandedMementoOverlay.remove();
-          expandedMementoOverlay = null;
+        function drag(event) {
+          if (!isDragging) return;
+          dragDeltaX = event.clientX - dragStartX;
+          if (Math.abs(dragDeltaX) > 6) hasDragged = true;
+          track.style.transform = `translateX(${currentTranslate + dragDeltaX}px)`;
         }
-        if (expandedMementoSource) {
-          expandedMementoSource.classList.remove("is-hidden-for-expand");
-          expandedMementoSource = null;
-        }
-        document.body.classList.remove("memento-fullscreen-lock");
-        if (document.fullscreenElement) {
-          document.exitFullscreen?.();
-        }
-      }
 
-      function bindMementoCarousel(items) {
-        if (!mementoTrack) return;
-        mementoTrack.replaceChildren(
-          ...items.map((item, index) => {
-            const figure = document.createElement("figure");
-            figure.className = `memento-slide${index === 0 ? " is-active" : ""}`;
-            figure.dataset.slide = String(index);
-
-            const frame = document.createElement("div");
-            frame.className = "memento-frame";
-
-            const image = document.createElement("img");
-            image.src = item.src;
-            image.alt = item.alt;
-            image.loading = index < 6 ? "eager" : "lazy";
-            image.decoding = "async";
-
-            const syncOrientation = () => {
-              const isPortrait = image.naturalHeight > image.naturalWidth;
-              figure.classList.toggle("is-portrait", isPortrait);
-              figure.classList.toggle("is-landscape", !isPortrait);
-            };
-
-            image.addEventListener("load", syncOrientation);
-
-            const caption = document.createElement("figcaption");
-            const number = document.createElement("span");
-            number.textContent = String(index + 1).padStart(2, "0");
-            caption.append(number, document.createTextNode(` ${item.label}`));
-
-            frame.append(image);
-            frame.addEventListener("click", async (event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              if (expandedMementoSource === frame) {
-                exitMementoFullscreen();
-                return;
-              }
-              exitMementoFullscreen();
-              document.body.classList.add("memento-fullscreen-lock");
-              if (document.fullscreenEnabled && frame.requestFullscreen) {
-                try {
-                  await frame.requestFullscreen();
-                  return;
-                } catch (error) {
-                  console.warn("Fullscreen API unavailable, using in-page expansion.", error);
-                }
-              }
-              const overlay = document.createElement("div");
-              overlay.className = "memento-overlay";
-              const expandedFrame = frame.cloneNode(true);
-              expandedFrame.classList.add("is-expanded");
-              expandedFrame.addEventListener("click", (overlayEvent) => {
-                overlayEvent.preventDefault();
-                overlayEvent.stopPropagation();
-                exitMementoFullscreen();
-              });
-              overlay.addEventListener("click", exitMementoFullscreen);
-              overlay.append(expandedFrame);
-              document.body.append(overlay);
-              frame.classList.add("is-hidden-for-expand");
-              expandedMementoSource = frame;
-              expandedMementoOverlay = overlay;
-            });
-
-            figure.append(frame, caption);
-            if (image.complete && image.naturalWidth) {
-              syncOrientation();
-            }
-            return figure;
-          }),
-        );
-
-        mementoSlides = Array.from(mementoTrack.querySelectorAll(".memento-slide"));
-        mementoIndex = 0;
-
-        updateMementoActive();
-        updateMementoCount();
-        mementoObserver?.disconnect();
-        mementoObserver = new IntersectionObserver(
-          (entries) => {
-            const visible = entries
-              .filter((entry) => entry.isIntersecting)
-              .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-            if (!visible) return;
-            const index = Number(visible.target.dataset.slide);
-            if (index === mementoIndex) return;
-            mementoIndex = index;
-            updateMementoActive();
-            updateMementoCount();
-          },
-          {
-            root: mementoViewport,
-            threshold: [0.55, 0.65, 0.75],
-          },
-        );
-
-        mementoSlides.forEach((slide) => {
-          mementoObserver.observe(slide);
-          slide.addEventListener("click", () => showMementoSlide(Number(slide.dataset.slide)));
-        });
-
-        mementoPrev?.addEventListener("click", () => showMementoSlide(mementoIndex - 1));
-        mementoNext?.addEventListener("click", () => showMementoSlide(mementoIndex + 1));
-        window.requestAnimationFrame(() => showMementoSlide(0, "auto"));
-      }
-
-      async function loadMementoCarousel() {
-        if (!mementoTrack) return;
-        try {
-          const response = await fetch("assets/memento-carousel/manifest.json");
-          const items = await response.json();
-          bindMementoCarousel(items);
-        } catch (error) {
-          console.error("No se pudo cargar la carpeta MEMENTO", error);
-        }
-      }
-
-      loadMementoCarousel();
-
-      const commercialSlider = document.querySelector(".commercial-slider");
-      if (commercialSlider) {
-        const commercialPlay = commercialSlider.querySelector(".play-toggle");
-        const commercialIframe = commercialSlider.querySelector("iframe");
-        const commercialSlide = commercialSlider.querySelector(".video-slide");
-        commercialPlay?.addEventListener("click", () => {
-          if (commercialIframe && !commercialIframe.src) {
-            commercialIframe.src = commercialIframe.dataset.src;
+        function finishDrag() {
+          if (!isDragging) return;
+          isDragging = false;
+          viewport.classList.remove("is-dragging");
+          track.style.transition = "";
+          if (Math.abs(dragDeltaX) > 90) {
+            move(dragDeltaX < 0 ? 1 : -1);
+          } else {
+            isAnimating = position();
           }
-          commercialSlide?.classList.add("is-playing");
+          setTimeout(() => {
+            hasDragged = false;
+          }, 0);
+        }
+
+        updateActive();
+        updateCount();
+        position(false);
+
+        if (items.length === 1) {
+          prev.disabled = true;
+          next.disabled = true;
+        }
+
+        prev.addEventListener("click", () => move(-1));
+        next.addEventListener("click", () => move(1));
+        track.addEventListener("transitionend", handleTransitionEnd);
+        viewport.addEventListener("pointerdown", startDrag);
+        viewport.addEventListener("pointermove", drag);
+        viewport.addEventListener("pointerup", finishDrag);
+        viewport.addEventListener("pointercancel", finishDrag);
+        window.addEventListener("resize", () => position(false));
+
+        slides.forEach((slide) => {
+          const playButton = slide.querySelector(".play-toggle");
+          if (playButton) {
+            playButton.addEventListener("click", (event) => {
+              event.stopPropagation();
+              playSlide(slide);
+            });
+          }
+
+          slide.addEventListener("click", () => {
+            if (hasDragged || isAnimating) return;
+            if (!slide.classList.contains("is-active")) {
+              stopSlide(slides[activeIndex]);
+              activeIndex = slides.indexOf(slide);
+              activeRealIndex = Number(slide.dataset.index || 0);
+              updateActive();
+              updateCount();
+              isAnimating = position();
+            }
+          });
         });
+
+        if (onSelect) {
+          onSelect({ show, move });
+        }
       }
 
-      document.addEventListener("fullscreenchange", () => {
-        if (document.fullscreenElement) return;
-        exitMementoFullscreen();
+      const filmViewport = document.querySelector("#film .slider-viewport");
+      const filmTrack = document.querySelector("#film .video-track");
+      const filmPrev = document.querySelector(".film-prev");
+      const filmNext = document.querySelector(".film-next");
+      const filmCount = document.querySelector(".film-count");
+
+      attachLoopCarousel({
+        track: filmTrack,
+        viewport: filmViewport,
+        prev: filmPrev,
+        next: filmNext,
+        countEl: filmCount,
+        items: filmItems,
+        renderItem: (item, index) => `
+          <article class="video-slide${index === 0 ? " is-active" : ""}" data-index="${index}">
+            <div class="video-embed">
+              <img src="${item.still}" alt="Still de ${item.title}" />
+              ${mediaTag({ kind: "iframe", title: item.title, src: item.src })}
+              <button class="play-toggle" type="button" aria-label="Reproducir ${item.title}">Play</button>
+            </div>
+            <div class="slide-caption">
+              <p class="meta">${item.meta}</p>
+              <h2>${item.title}</h2>
+              <p class="description${item.creditsColumns ? " credits-columns" : ""}">${item.desc}</p>
+            </div>
+          </article>
+        `,
       });
 
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          exitMementoFullscreen();
-        }
+      const photographyViewport = document.querySelector("#photography .slider-viewport");
+      const photographyTrack = document.querySelector("#photography .photography-track");
+      const photographyPrev = document.querySelector(".photography-prev");
+      const photographyNext = document.querySelector(".photography-next");
+      const photographyCount = document.querySelector(".photography-count");
+
+      attachLoopCarousel({
+        track: photographyTrack,
+        viewport: photographyViewport,
+        prev: photographyPrev,
+        next: photographyNext,
+        countEl: photographyCount,
+        items: photographyItems,
+        renderItem: (item, index) => `
+          <figure class="photography-slide${index === 0 ? " is-active" : ""}" data-index="${index}">
+            <div class="photography-frame">
+              <img
+                src="assets/photography/${encodeURIComponent(item.file)}"
+                alt="${item.label}"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <figcaption class="photography-caption">${item.label}</figcaption>
+          </figure>
+        `,
       });
+
+      const ambulanteViewport = document.querySelector("#ambulante .slider-viewport");
+      const ambulanteTrack = document.querySelector("#ambulante .video-track");
+      const ambulantePrev = document.querySelector(".ambulante-prev");
+      const ambulanteNext = document.querySelector(".ambulante-next");
+      const ambulanteCount = document.querySelector(".ambulante-count");
+
+      attachLoopCarousel({
+        track: ambulanteTrack,
+        viewport: ambulanteViewport,
+        prev: ambulantePrev,
+        next: ambulanteNext,
+        countEl: ambulanteCount,
+        items: ambulanteItems,
+        renderItem: (item, index) => `
+          <article class="video-slide${index === 0 ? " is-active" : ""}" data-index="${index}">
+            <div class="video-embed">
+              <img src="${item.still}" alt="Still de ${item.title}" />
+              ${mediaTag({ kind: "iframe", title: item.title, src: item.src })}
+              <button class="play-toggle" type="button" aria-label="Reproducir ${item.title}">Play</button>
+            </div>
+            <div class="slide-caption">
+              <p class="meta">${item.meta}</p>
+              <h2>${item.title}</h2>
+              <p class="description">${item.desc}</p>
+            </div>
+          </article>
+        `,
+      });
+
+      const actorFeature = document.querySelector(".actor-feature");
+      actorFeature?.querySelector(".play-toggle")?.addEventListener("click", () => playSlide(actorFeature));
     </script>
   </body>
 </html>
